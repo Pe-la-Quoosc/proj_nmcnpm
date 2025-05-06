@@ -1,16 +1,17 @@
-import { Button, Checkbox, Form, Input, notification } from "antd";
+import { Row, Col, Button, Form, Input, notification } from "antd";
 import { login } from "../../services/usersServices";
 import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../helpers/cookie";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
+import "../../styles/Login.scss";
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = async (e) => {
     const response = await login(e.username, e.password);
     if (response.length > 0) {
-        // console.log(response);
+      // console.log(response);
       setCookie("user", response[0].username, 1);
       setCookie("id", response[0].id, 1);
       setCookie("token", response[0].token, 1);
@@ -34,37 +35,58 @@ function Login() {
       });
     }
   };
+  const handleSignUp =()=>{
+    navigate("/register");
+  }
   return (
     <>
-      <div>Login</div>
-      <div>
-        <Form
-          name="basic"
-          onFinish={onFinish}
-        >
-          <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
-          >
-            <Input />
-          </Form.Item>
+    <div className="login">
+    <div className="login-container">
+        <Row gutter={[20,20]}>
+          <Col span={12} className="login-header">
+            <h1> Tên tiêu đề</h1>
+            <p> Nội dung :.....</p>
+          </Col>
+          <Col span={12} className="login-form">
+            <h1>Đăng nhập</h1>
+            <Form name="basic" onFinish={onFinish}>
+              <Form.Item
+                label="User"
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password />
-          </Form.Item>
+              <Form.Item
+                label="Pass"
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your password!" },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Dang nhap
-            </Button>
-          </Form.Item>
-        </Form>
+              <Form.Item className="login-form__button">
+                <Button type="primary" htmlType="submit" className="button">
+                  Đăng Nhập
+                </Button>
+              </Form.Item>
+              
+              <Form.Item className="login-form__button">
+                <Button type="primary" htmlType="submit" className="button" onClick={handleSignUp}>
+                  Đăng Kí 
+                </Button>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
       </div>
+    </div>
+      
     </>
   );
 }

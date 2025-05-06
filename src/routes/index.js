@@ -6,6 +6,8 @@ import Login from "../pages/Login";
 import LogOut from "../pages/LogOut";
 import Register from "../pages/Register";
 import Exercise from "../pages/Exercise";
+import Carts from "../pages/Carts";
+import User from "../pages/Users";
 export const routes = [
     {
         path: "/",
@@ -17,6 +19,8 @@ export const routes = [
             {path:"logout",element:<LogOut/>},
             {path:"register",element:<Register/>},
             {path:"exercise",element:<Exercise/>},
+            {path:"carts",element:<Carts/>},
+            {path:"user",element:<User/>}
         ],
     },
 ];

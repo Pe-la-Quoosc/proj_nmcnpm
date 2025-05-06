@@ -1,0 +1,23 @@
+.product{
+    display: flex;
+    flex-wrap: wrap;
+    &__item{
+        width: 22%;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    &__img{
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+    }
+    &__price{
+        &--old{
+            text-decoration: line-through;
+            color: #999;
+            font-weight:600;
+        }
+    }
+}

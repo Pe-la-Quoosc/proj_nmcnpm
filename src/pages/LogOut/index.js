@@ -6,7 +6,7 @@ import { checkLogin } from "../../actions/login";
 
 function LogOut() {
     const navigate = useNavigate();
-    const dispatch=useDispatch();
+    const dispatch= useDispatch();
     
     deleteAllCookies();
     useEffect(() => {
