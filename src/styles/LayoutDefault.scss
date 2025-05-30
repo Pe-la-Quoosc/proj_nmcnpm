@@ -112,108 +112,129 @@ $breakpoints: (
 }
 
 // Styles chính
-.ava-footer {
-  background-color: map-get($footer-colors, bg);
-  color: map-get($footer-colors, text);
-  padding: 50px 0 20px;
-  font-family: 'Arial', sans-serif;
-  border-top: 1px solid map-get($footer-colors, border);
+.ava-footer,
+.gymbe-footer {
+  background: #fff;
+  color: #111;
+  padding: 48px 0 24px 0;
+  border-top: 1px solid #eee;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-  }
+.ava-footer .container,
+.gymbe-footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
 
+.footer-content {
+  align-items: flex-start;
+}
+
+.footer-section {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.footer-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.contact-info p {
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+  color: #111;
+}
+
+.footer-socials {
+  margin-top: 12px;
+}
+
+.footer-socials a {
+  display: inline-block;
+  margin-right: 10px;
+  color: #111;
+  font-size: 1.3rem;
+  transition: color 0.2s;
+}
+
+.footer-socials a:hover {
+  color: #1890ff;
+}
+
+.footer-section h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+  color: #111;
+  text-transform: uppercase;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+  color: #111;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.footer-section ul li a:hover {
+  color: #1890ff;
+}
+
+.footer-newsletter {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.footer-newsletter input[type="email"] {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 1rem;
+  outline: none;
+  background: #fafafa;
+}
+
+.footer-newsletter button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 20px;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.footer-newsletter button:hover {
+  background: #1890ff;
+}
+
+@media (max-width: 900px) {
   .footer-content {
-    margin-bottom: 30px;
+    flex-direction: column !important;
+    gap: 24px;
   }
-
   .footer-section {
-    h3, h4 {
-      color: map-get($footer-colors, heading);
-      margin-bottom: 20px;
-      font-size: 16px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .footer-logo {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      display: block;
-    }
-
-    .contact-info p {
-      margin: 8px 0;
-      line-height: 1.5;
-      color: map-get($footer-colors, text);
-    }
-
-    ul {
-      @include list-reset;
-
-      li {
-        margin-bottom: 12px;
-
-        a {
-          color: map-get($footer-colors, link);
-          text-decoration: none;
-          transition: color 0.3s;
-          font-size: 14px;
-
-          &:hover {
-            color: map-get($footer-colors, link-hover);
-            text-decoration: underline;
-          }
-        }
-      }
-    }
-  }
-
-  .footer-bottom {
-    padding-top: 30px;
-    margin-top: 30px;
-    border-top: 1px solid map-get($footer-colors, border);
-
-    p {
-      margin: 0;
-      color: lighten(map-get($footer-colors, text), 20%);
-      font-size: 14px;
-    }
-
-    .legal-links {
-      a {
-        color: map-get($footer-colors, link);
-        text-decoration: none;
-        margin-left: 15px;
-        font-size: 14px;
-
-        &:hover {
-          color: map-get($footer-colors, link-hover);
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-
-  // Responsive
-  @include responsive(md) {
-    padding: 30px 0 20px;
-
-    .footer-section {
-      margin-bottom: 25px;
-    }
-
-    .footer-bottom {
-      flex-direction: column;
-      text-align: center;
-      gap: 10px;
-
-      .legal-links a {
-        margin: 0 8px;
-      }
-    }
+    margin-bottom: 25px;
   }
 }

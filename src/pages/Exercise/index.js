@@ -6,4 +6,6 @@ function Exercise() {
     </div>
   );
 }
+
+
 export default Exercise;
