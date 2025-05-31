@@ -8,42 +8,51 @@ import Cart1 from "../../Cart_1";
 import User1 from "../../User_1";
 import { useState, useEffect, useRef } from "react";
 import { RightSquareOutlined } from "@ant-design/icons";
+import {
+  TwitterOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  YoutubeOutlined,
+  PinterestOutlined
+} from "@ant-design/icons";
+
 const footerData = {
   contact: {
-    title: "AVA",
+    title: "GYMBE",
     items: [
-      "Lorem ipsum, 235 Simply,",
-      "printing, Pin 309 300",
-      "roturpastol0075@gmail.com",
-      "+1 00000 00000",
+      "268 St. South New York/NY 98944, United States.",
+      "+222-1800-2628",
+      "gymbeexclusive@gmail.com",
+    ],
+    socials: [
+      { icon: <TwitterOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
+      { icon: <FacebookOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
+      { icon: <InstagramOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
+      { icon: <YoutubeOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
     ],
   },
-  sections: [
-    {
-      title: "Information",
-      items: ["Men", "Women", "Kids", "Home & Living", "Beauty"],
-    },
-    {
-      title: "Explore",
-      items: ["Blog", "Gift Cards", "Financing", "Reviews"],
-    },
-    {
-      title: "Contact Us",
-      items: ["FAQ", "Track Orders", "Shipping", "Cancellation", "Returns"],
-    },
-    {
-      title: "Support",
-      items: ["Help Center", "News", "Career", "Terms of Use"],
-    },
+  categories: [
+    "Special Offers",
+    "Performance",
+    "T-Shirts",
+    "Underwear",
+    "Top Brands",
+    "Online Exclusive",
+  ],
+  customerService: [
+    "Chính sách bảo mật",
+    "Điều khoản dịch vụ",
+    "Hướng dẫn mua hàng",
+    "Liên hệ hỗ trợ",
+
   ],
 };
+
 function LayoutDefault() {
   const token = getCookie("token");
   const isLogin = useSelector((state) => state.loginReducer);
   const location = useLocation();
   const menuRef = useRef(null);
-  // console.log(token);
-  // console.log(isLogin);
   const hideFooter =
     location.pathname === "/login" || location.pathname === "/register";
   const [menuOpen, setMenuOpen] = useState(false);
@@ -97,8 +106,8 @@ function LayoutDefault() {
             </>
           )}
 
-          <NavLink className="NavLink" to="/blog">
-            Blog
+          <NavLink className="NavLink" to="/knowledge">
+            Kiến thức
           </NavLink>
           <NavLink className="NavLink" to="/about">
             Giới thiệu
@@ -129,54 +138,61 @@ function LayoutDefault() {
         <Outlet />
       </main>
       {!hideFooter && (
-        <footer className="ava-footer">
+        <footer className="ava-footer gymbe-footer">
           <div className="container">
             <Row gutter={[32, 32]} className="footer-content">
-              <Col xs={24} sm={12} md={6} lg={5}>
+              {/* Contact & Social */}
+              <Col xs={24} sm={12} md={8} lg={7}>
                 <div className="footer-section">
-                  <h3 className="footer-logo"> {footerData.contact.title}</h3>
+                  <h3 className="footer-logo">{footerData.contact.title}</h3>
                   <div className="contact-info">
-                    {footerData.contact.items.map((item, index) => (
-                      <p key={index}>{item}</p>
+                    <p>{footerData.contact.items[0]}</p>
+                    <p>{footerData.contact.items[1]}</p>
+                    <p>{footerData.contact.items[2]}</p>
+                  </div>
+                  <div className="footer-socials">
+                    {footerData.contact.socials.map((s, idx) => (
+                      <a key={idx} href={s.link} target="_blank" rel="noopener noreferrer">
+                        {s.icon}
+                      </a>
                     ))}
                   </div>
                 </div>
               </Col>
-              {footerData.sections.map((section, index) => (
-                <Col
-                  key={index}
-                  xs={24}
-                  sm={12}
-                  md={6}
-                  lg={index === 3 ? 5 : 4}
-                >
-                  <div className="footer-section">
-                    <h4>{section.title}</h4>
-                    <ul>
-                      {section.items.map((item, i) => (
-                        <li key={i}>
-                          <a href="#">{item}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Col>
-              ))}
-            </Row>
-
-            {/* Bottom Footer */}
-            <Row
-              className="footer-bottom"
-              justify="space-between"
-              align="middle"
-            >
-              <Col>
-                <p>© 2023 AVA, All Rights Reserved.</p>
+              {/* Hot Categories */}
+              <Col xs={24} sm={12} md={6} lg={5}>
+                <div className="footer-section">
+                  <h4>Sản Phẩm</h4>
+                  <ul>
+                    {footerData.categories.map((item, i) => (
+                      <li key={i}>
+                        <a href="#">{item}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </Col>
-              <Col>
-                <div className="legal-links">
-                  <a href="#">Privacy Policy</a>
-                  <a href="#">Terms & Conditions</a>
+              {/* Customer Service */}
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <div className="footer-section">
+                  <h4>Hỗ trợ khách hàng</h4>
+                  <ul>
+                    {footerData.customerService.map((item, i) => (
+                      <li key={i}>
+                        <a href="#">{item}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Col>
+              {/* Newsletter */}
+              <Col xs={24} sm={12} md={8} lg={6}>
+                <div className="footer-section">
+                  <h4>Đăng Ký Nhận Tin</h4>
+                  <form className="footer-newsletter">
+                    <input type="email" placeholder="Enter your email..." />
+                    <button type="submit">Đăng Ký</button>
+                  </form>
                 </div>
               </Col>
             </Row>
