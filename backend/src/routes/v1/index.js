@@ -1,31 +1,27 @@
 import express from 'express'
 
-import { adminRoutes } from './adminRoutes.js'
-import { userRoutes } from './userRoutes.js'
-import { productRoutes } from './productRoutes.js'
-import { categoryRoutes } from './categoryRoutes.js'
-import { reviewRoutes } from './reviewRoutes.js'
-import { cartRoutes } from './cartRoutes.js'
-import { cartitemRoutes } from './cartitemRoutes.js'
-import { orderRoutes } from './orderRoutes.js'
-import { orderitemRoutes } from './orderitemRoutes.js'
-import { paymentRoutes } from './paymentRoutes.js'
-import { profileRoutes } from './profileRoutes.js'
-import { articleRoutes } from './articleRoutes.js'
+import { adminRoute } from './adminRoute.js'
+import { userRoute } from './userRoute.js'
+import { productRoute } from './productRoute.js'
+import { reviewRoute } from './reviewRoute.js'
+import { cartRoute } from './cartRoute.js'
+import { cartitemRoute } from './cartitemRoute.js'
+import { orderRoute } from './orderRoute.js'
+import { orderitemRoute } from './orderitemRoute.js'
+import { paymentRoute } from './paymentRoute.js'
+import { articleRoute } from './articleRoute.js'
 
 const Router = express.Router()
 
-Router.use('/admins', adminRoutes)
-Router.use('/users', userRoutes)
-Router.use('/products', productRoutes)
-Router.use('/categories', categoryRoutes)
-Router.use('/reviews', reviewRoutes)
-Router.use('/carts', cartRoutes)
-Router.use('/cartitems', cartitemRoutes)
-Router.use('/orders', orderRoutes)
-Router.use('/orderitems', orderitemRoutes)
-Router.use('/payments', paymentRoutes)
-Router.use('/profiles', profileRoutes)
-Router.use('/articles', articleRoutes)
+Router.use('/admins', adminRoute)
+Router.use('/users', userRoute)
+Router.use('/products', productRoute)
+Router.use('/reviews', reviewRoute)
+Router.use('/carts', cartRoute)
+Router.use('/cartitems', cartitemRoute)
+Router.use('/orders', orderRoute)
+Router.use('/orderitems', orderitemRoute)
+Router.use('/payments', paymentRoute)
+Router.use('/articles', articleRoute)
 
 export const APIs_V1 = Router

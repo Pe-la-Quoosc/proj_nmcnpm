@@ -1,15 +1,16 @@
 import express from 'express'
 import {StatusCodes} from 'http-status-codes'
+import { userValidation } from '../../validations/userValidation.js'
 
 const Router = express.Router()
 
-Router.route('/users')
+Router.route('/')
   .get((req, res) => res.status(StatusCodes.OK).json({ message: 'Get all users' }))
-  .post((req, res) => res.status(StatusCodes.CREATED).json({ message: 'Create new user' }))
+  .post(userValidation.createNew)
 
-Router.route('/users/:id')
+Router.route('/:id')
   .get((req, res) => res.status(StatusCodes.OK).json({ message: `Get user ${req.params.id}` }))
   .put((req, res) => res.status(StatusCodes.OK).json({ message: `Update user ${req.params.id}` }))
   .delete((req, res) => res.status(StatusCodes.NO_CONTENT).json({ message: `Delete user ${req.params.id}` }))
 
-export const boardRoutes = Router
+export const userRoute = Router
