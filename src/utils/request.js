@@ -14,6 +14,7 @@ export const post = async (path, options) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(options),
+    credentials: "include",
   });
   return await response.json();
 };

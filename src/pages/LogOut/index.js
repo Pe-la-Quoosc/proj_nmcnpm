@@ -1,18 +1,25 @@
 import { useEffect } from "react";
-import { deleteAllCookies } from "../../helpers/cookie";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
+import { post } from "../../utils/request";
 
 function LogOut() {
     const navigate = useNavigate();
     const dispatch= useDispatch();
-    
-    deleteAllCookies();
+
     useEffect(() => {
-        dispatch(checkLogin(false));
-        navigate("/login");
-    }, []);
+      const logout = async () => {
+        try{
+          await post("api/user/logout");
+          dispatch(checkLogin(false));
+          navigate("/login");
+        } catch (error) {
+          console.error("Logout failed:", error);
+        }
+      };
+      logout();
+    }, [dispatch, navigate]);
   return (
     <></>
   );
