@@ -13,7 +13,6 @@ import {
   FacebookOutlined,
   InstagramOutlined,
   YoutubeOutlined,
-  PinterestOutlined
 } from "@ant-design/icons";
 
 const footerData = {
@@ -166,7 +165,7 @@ function LayoutDefault() {
                   <ul>
                     {footerData.categories.map((item, i) => (
                       <li key={i}>
-                        <a href="#">{item}</a>
+                        <a href="https://www.facebook.com/">{item}</a>
                       </li>
                     ))}
                   </ul>
@@ -179,7 +178,7 @@ function LayoutDefault() {
                   <ul>
                     {footerData.customerService.map((item, i) => (
                       <li key={i}>
-                        <a href="#">{item}</a>
+                        <a href="https://www.facebook.com/">{item}</a>
                       </li>
                     ))}
                   </ul>

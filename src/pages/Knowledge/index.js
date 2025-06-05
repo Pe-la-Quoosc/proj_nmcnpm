@@ -1,26 +1,17 @@
-import React from "react";
+
 import { Row, Col, Card } from "antd";
 import { useState } from "react";
 import "../../styles/Blog.scss";
+import { exercisesData } from "../../data/exerciseData";
 import { NavLink } from "react-router-dom";
-import bung from "../../assets/images/bung_blog.jpg";
-import chan from "../../assets/images/Leg-Day-Workout.webp";
-import tay from "../../assets/images/tay_blog.jpg";
-import vai from "../../assets/images/vai_blog.webp";
-import lung from "../../assets/images/lung_blog.webp";
-import nguc from "../../assets/images/benchhead.jpg";
-
 import { nutritionTopics } from "../../data/nutritionData";
 import schedules from "../../data/schedules";
 
-const muscleGroups = [
-  { id: 1, group: "Các bài tập ngực", image: nguc},
-  { id: 2, group: "Các bài tập lưng", image: lung },
-  { id: 3, group: "Các bài tập chân", image: chan },
-  { id: 4, group: "Các bài tập tay", image: tay },
-  { id: 5, group: "Các bài tập vai", image: vai },
-  { id: 6, group: "Các bài tập bụng", image: bung }, 
-];
+const muscleGroups = exercisesData.map(item => ({
+  id: item.id,
+  group: `Các bài tập ${item.group.toLowerCase()}`,
+  image: item.img,
+}));
 
 
 

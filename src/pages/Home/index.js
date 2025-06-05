@@ -7,48 +7,20 @@ import dc_img from "../../assets/images/Premium Photo _ Flat lay arrangement wit
 import qa_img from "../../assets/images/tải xuống.jpg";
 import subimg from "../../assets/images/Dumbbell An Old Gym Setting With Dumbbells Backgrounds _ JPG Free Download - Pikbest.jpg";
 import home_img from "../../assets/images/home-img.png";
-import bung from "../../assets/images/bung.png";
-import chan from "../../assets/images/chan.png";
-import tay from "../../assets/images/tay.png";
-import vai from "../../assets/images/vai.png";
-import lung from "../../assets/images/lung.png";
+import { exercisesData } from "../../data/exerciseData"; 
 
-const section4Images = [
-  { src: bung, alt: "bung", title: "Bung" },
-  { src: chan, alt: "chan", title: "Bung" },
-  { src: tay, alt: "tay", title: "Bung" },
-  { src: vai, alt: "vai", title: "Bung" },
-  { src: lung, alt: "lung", title: "Bung" },
-  { src: lung, alt: "nguc", title: "Bung" },
-];
+const sectionImages = exercisesData.map(item => ({
+  id: item.id,
+  image: item.img,
+  alt: item.group,
+  title: item.group,
+}));
 const carouselItems = [
   { src: tpbs_img, alt: "Suplements", title: "Thuc pham bo sung" },
   { src: dc_img, alt: "Equipment", title: "Dung cu tap luyen" },
   { src: qa_img, alt: "Clothing", title: "Quan ao" },
 ];
-const blogPosts = [
-  {
-    id: 1,
-    image: qa_img,
-    title: "Kỹ thuật tập luyện đúng cách",
-    description:
-      "Hướng dẫn chi tiết các động tác cơ bản đến nâng cao để tránh chấn thương và đạt hiệu quả tối đa.",
-  },
-  {
-    id: 2,
-    image: qa_img,
-    title: "Dinh dưỡng thể hình",
-    description:
-      "Chế độ ăn khoa học cho từng mục tiêu: tăng cơ, giảm mỡ hay duy trì thể lực.",
-  },
-  {
-    id: 3,
-    image: qa_img,
-    title: "Lịch tập cá nhân hóa",
-    description:
-      "Thiết kế lịch tập phù hợp với thể trạng và mục tiêu cá nhân của bạn.",
-  },
-];
+
 function Home() {
   return (
     <>
@@ -78,7 +50,7 @@ function Home() {
         {/* Product section */}
         <section className="products-section">
           <div className="container">
-            <h2 className="section-title">San pham & dich vu</h2>
+            <h2 className="section-title">Sản phẩm và dịch vụ</h2>
             <Row gutter={[30, 30]}>
               <Col xs={24} lg={6} className="products-intro">
                 <h3 className="section-subtitle">Giai phap toan dien</h3>
@@ -107,26 +79,6 @@ function Home() {
             </Row>
           </div>
         </section>
-        {/* Blog Section */}
-        <section className="blog-section">
-          <div className="container">
-            <h2 className="section-title">Kien thuc the hinh</h2>
-            <div class="section-divider"></div>
-            <Row className="blog-posts" wrap={false}>
-              {blogPosts.map((item, _) => (
-                <Col key={item.id} xs={24} md={8} className="blog-card">
-                  <img
-                    src={item.image}
-                    alt={`Blog pasr ${item.id}`}
-                    loading="lazy"
-                  />
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </Col>
-              ))}
-            </Row>
-          </div>
-        </section>
         {/* Excercises Section */}
         <section className="excercise-section">
           <div className="container">
@@ -137,7 +89,7 @@ function Home() {
                 dàng lựa chọn và tập trung phát triển các vùng cơ thể mong muốn.
               </div>
             <Row gutter={[20,20]} className="excercise-grid">
-              {section4Images.map((item, index) => (
+              {sectionImages.map((item, index) => (
                 <Col
                   key={index}
                   xs={24}
@@ -145,8 +97,10 @@ function Home() {
                   md={8}
                   className="excercise-col"
                 >
-                    <img src={item.src} alt={item.alt} loading="lazy" />
+                  <NavLink to={`/ExerciseDetail/${item.id}`}>
+                    <img src={item.image} alt={item.alt} loading="lazy" />
                     <h3>{item.title}</h3>
+                  </NavLink>
                 </Col>
                 
               ))}

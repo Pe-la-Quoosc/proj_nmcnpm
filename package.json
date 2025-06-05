@@ -2,7 +2,6 @@
   "name": "proj_cnpm",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@ant-design/charts": "^2.2.7",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",

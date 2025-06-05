@@ -12,7 +12,7 @@ function LogOut() {
     useEffect(() => {
         dispatch(checkLogin(false));
         navigate("/login");
-    }, []);
+    }, [dispatch, navigate]);
   return (
     <></>
   );
