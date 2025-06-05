@@ -24,3 +24,10 @@ export const deleteAll = () => {
     type: "DELETE_ALL",
   };
 };
+
+export const setCart = (cart) => {
+    return {
+        type: 'SET_CART',
+        cart: cart,
+    }
+}

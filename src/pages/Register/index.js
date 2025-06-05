@@ -1,34 +1,23 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { generateToken } from "../../helpers/generateToken";
-import { checkExistUser, register } from "../../services/usersServices";
+import { register } from "../../services/usersServices";
 import { Row, Col, Button, Form, Input, notification } from "antd";
 import "../../styles/SignUp.scss";
 function Register() {
   const navigate = useNavigate();
 
   const onFinish = async (e) => {
-    const username = e.username;
-    const password = e.password;
-    const email = e.email;
-
-    const checkExist = await checkExistUser("username", username);
-    if (checkExist.length > 0) {
-      notification.error({
-        message: "Register failed",
-        description: "Username already exists",
-        className: "custom-notification__error",
-        placement: "topRight",
-        duration: 2,
-      });
-    } else {
+    try {
+      const username = e.username;
+      const password = e.password;
+      const email = e.email;
+      const mobile = e.mobile;
       const options = {
         username: username,
         password: password,
         email: email,
-        token: generateToken(),
+        mobile: mobile,
       };
       const response = await register(options);
-      // console.log(response);
       if (response) {
         notification.success({
           message: "Register successful",
@@ -36,9 +25,17 @@ function Register() {
           className: "custom-notification__success",
           placement: "topRight",
           duration: 1,
-        });
-        navigate("/login");
+      });
+      navigate("/login");
       }
+    } catch (error) {
+      notification.error({
+        message: "Register failed",
+        description: error.message,
+        className: "custom-notification__error",
+        placement: "topRight",
+        duration: 2,
+      });
     }
   };
   return (
@@ -62,7 +59,6 @@ function Register() {
                 >
                   <Input />
                 </Form.Item>
-
                 <Form.Item
                   label="Pass"
                   name="password"
@@ -72,14 +68,33 @@ function Register() {
                 >
                   <Input.Password />
                 </Form.Item>
-
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: "Please input your email!" },
+                    { type: "email", message: "Please enter a valid email!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Mobile"
+                  name="mobile"
+                  rules={[
+                    { required: true, message: "Please input your mobile!" },
+                    { pattern: /^[0-9]+$/, message: "Please enter a valid mobile number!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
                 <Form.Item className="signup-form__button">
                   <Button type="primary" htmlType="submit" className="button">
-                    Dang ky
+                    Đăng ký
                   </Button>
                 </Form.Item>
               </Form>
-              <div> Already have an account? <NavLink to='/login'><b>Sign Up</b></NavLink></div>
+              <div> Already have an account? <NavLink to='/login'><b>Sign In</b></NavLink></div>
             </Col>
           </Row>
         </div>
@@ -87,4 +102,5 @@ function Register() {
     </>
   );
 }
+
 export default Register;

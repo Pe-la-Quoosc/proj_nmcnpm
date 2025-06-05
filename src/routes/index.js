@@ -7,15 +7,12 @@ import LogOut from "../pages/LogOut";
 import Register from "../pages/Register";
 import Exercise from "../pages/Exercise";
 import Carts from "../pages/Carts";
-import Knowledge from "../pages/Knowledge";
-import NutritionList from "../pages/NutritionList";
-import ExerciseDetail from '../pages/ExerciseDetail';
-import Contact from "../pages/Contact";
 import User from "../pages/Users";
-import About from "../pages/About";
-
-
-
+import DetailProduct from "../pages/DetailProduct";
+import UserAddress from "../pages/Users/UserAddress";
+import UserPassword from "../pages/Users/UserPassword";
+import UserOrders from "../pages/Users/UserOrders";
+import UserProfileInfo from "../pages/Users/UserProfileInfo";
 export const routes = [
     {
         path: "/",
@@ -23,17 +20,22 @@ export const routes = [
         children: [
             { path: "/", element: <Home /> },
             {path:"products", element: <Product />},
+            {path:"products/:id", element:<DetailProduct />},
             {path:"login",element:<Login/>},
             {path:"logout",element:<LogOut/>},
             {path:"register",element:<Register/>},
-            {path: "knowledge", element: <Knowledge/>},
-            {path: "knowledge/nutritionlist", element: <NutritionList /> },
             {path:"exercise",element:<Exercise/>},
-            {path: "ExerciseDetail/:id", element: <ExerciseDetail /> },
             {path:"carts",element:<Carts/>},
-            {path:"user",element:<User/>},
-            {path: "contact", element: <Contact /> },
-            {path: "about", element: <About />}
+            {path:"user",element:<User/>,
+                children:[
+                    {path:"profile",element:<UserProfileInfo/>},
+                    {path:"address",element:<UserAddress/>},
+                    {path:"password",element:<UserPassword/>},
+                    {path:"orders",element:<UserOrders/>},
+
+
+                ]
+            }
         ],
     },
 ];

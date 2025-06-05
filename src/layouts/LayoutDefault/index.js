@@ -49,12 +49,12 @@ const footerData = {
 
 function LayoutDefault() {
   const token = getCookie("token");
-  const isLogin = useSelector((state) => state.loginReducer);
   const location = useLocation();
   const menuRef = useRef(null);
+    const [menuOpen, setMenuOpen] = useState(false);
   const hideFooter =
     location.pathname === "/login" || location.pathname === "/register";
-  const [menuOpen, setMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const handleClickOutside = (e) => {
