@@ -10,12 +10,10 @@ function Register() {
       const username = e.username;
       const password = e.password;
       const email = e.email;
-      const mobile = e.mobile;
       const options = {
         username: username,
         password: password,
         email: email,
-        mobile: mobile,
       };
       const response = await register(options);
       if (response) {
@@ -26,7 +24,10 @@ function Register() {
           placement: "topRight",
           duration: 1,
       });
-      navigate("/login");
+      setTimeout(()=>{
+        navigate("/");
+      },2000);
+      
       }
     } catch (error) {
       notification.error({
@@ -60,15 +61,6 @@ function Register() {
                   <Input />
                 </Form.Item>
                 <Form.Item
-                  label="Pass"
-                  name="password"
-                  rules={[
-                    { required: true, message: "Please input your password!" },
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-                <Form.Item
                   label="Email"
                   name="email"
                   rules={[
@@ -79,15 +71,15 @@ function Register() {
                   <Input />
                 </Form.Item>
                 <Form.Item
-                  label="Mobile"
-                  name="mobile"
+                  label="Pass"
+                  name="password"
                   rules={[
-                    { required: true, message: "Please input your mobile!" },
-                    { pattern: /^[0-9]+$/, message: "Please enter a valid mobile number!" },
+                    { required: true, message: "Please input your password!" },
                   ]}
                 >
-                  <Input />
+                  <Input.Password />
                 </Form.Item>
+                
                 <Form.Item className="signup-form__button">
                   <Button type="primary" htmlType="submit" className="button">
                     Đăng ký

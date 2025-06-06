@@ -49,6 +49,7 @@ const footerData = {
 
 function LayoutDefault() {
   const token = getCookie("token");
+  console.log(token);
   const location = useLocation();
   const menuRef = useRef(null);
     const [menuOpen, setMenuOpen] = useState(false);

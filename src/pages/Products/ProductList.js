@@ -1,7 +1,7 @@
 import { Col, Row } from "antd";
 import ProductItem from "./ProductItem";
 
-function ProductList(props) {
+const ProductList=(props) => {
   const { products } = props;
   return (
     <>

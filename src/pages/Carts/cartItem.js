@@ -1,37 +1,44 @@
 import { useDispatch } from "react-redux";
 import { deleteItem, updateQuantity } from "../../actions/cart";
 import { useRef } from "react";
-import { addToCartDataBase } from "../../services/cartService";
-import { getCookie } from "../../helpers/cookie";
+import { saveCartToDatabase } from "../../services/cartService";
 import "./Carts.scss";
+
 function CartItem(props) {
   const { item } = props;
   const dispatch = useDispatch();
   const inputRef = useRef();
   const price = (
-    (item.info.price * (100 - item.info.discountPercentage)) /
-    100
+    (item.info.price * (100 - item.info.discountPercentage)) / 100
   ).toFixed(0);
-  const handleUp = async () => {
-    dispatch(updateQuantity(item.id));
-    inputRef.current.value = parseInt(inputRef.current.value) + 1;
-    const userId = getCookie("id");
-    await addToCartDataBase(parseInt(userId), item.info, "add");
-  };
-  const handleDown = async () => {
-    if (item.quantity > 1) {
-      dispatch(updateQuantity(item.id, -1));
-      inputRef.current.value = parseInt(inputRef.current.value) - 1;
-      const userId = getCookie("id");
-      await addToCartDataBase(parseInt(userId), item.info, "decrease");
+
+  const syncCartWithBackend = async () => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      await saveCartToDatabase(cart); // Đồng bộ giỏ hàng với backend
+    } catch (error) {
+      console.error("Failed to sync cart with backend:", error.message);
     }
   };
-  const handleDelete = async () => {
-    dispatch(deleteItem(item.id));
-    const userId = getCookie("id");
-    await addToCartDataBase(parseInt(userId), item.info, "remove");
+
+  const handleUp = async () => {
+    dispatch(updateQuantity(item.id, 1)); // Cập nhật Redux
+    inputRef.current.value = parseInt(inputRef.current.value) + 1;
+    await syncCartWithBackend(); // Đồng bộ với backend
   };
 
+  const handleDown = async () => {
+    if (item.quantity > 1) {
+      dispatch(updateQuantity(item.id, -1)); // Cập nhật Redux
+      inputRef.current.value = parseInt(inputRef.current.value) - 1;
+      await syncCartWithBackend(); // Đồng bộ với backend
+    }
+  };
+
+  const handleDelete = async () => {
+    dispatch(deleteItem(item.id)); // Xóa khỏi Redux
+    await syncCartWithBackend(); // Đồng bộ với backend
+  };
 
   return (
     <>
@@ -52,16 +59,17 @@ function CartItem(props) {
             ref={inputRef}
             min={1}
             value={item.quantity}
-            onChange={handleChangeTotal}
+            readOnly
           />
           <button onClick={handleUp}>+</button>
         </div>
         <div className="cart__total">{price * item.quantity}</div>
         <div className="cart__remove">
-          <button onClick={handleDelete}>Xoa</button>
+          <button onClick={handleDelete}>Xóa</button>
         </div>
       </div>
     </>
   );
 }
+
 export default CartItem;

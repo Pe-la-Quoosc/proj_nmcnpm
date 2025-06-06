@@ -2,7 +2,6 @@ import { Button, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, updateQuantity } from "../../actions/cart";
 import { NavLink } from "react-router-dom";
-import { addToCartDataBase } from "../../services/cartService";
 import { getCookie } from "../../helpers/cookie";
 function ProductItem(props) {
   const { item } = props;
@@ -23,7 +22,7 @@ function ProductItem(props) {
       duration: 2,
     });
     const userId = getCookie("id");
-    await addToCartDataBase(userId, item, "add");
+    
   };
 
   return (

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Row, Col, Pagination, Input, Button, Empty, Select } from "antd";
 import { getProductList } from "../../services/productsService";
 import "./Products.scss";
-import ProductList from "./ProductList.js";
+import ProductList from "./ProductList";
+
 function Product() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -35,6 +36,7 @@ function Product() {
   useEffect(() => {
     const fetchApi = async () => {
       const res = await getProductList();
+      console.log("Fetched products:", res);
       setProducts(res);
       setFilteredProducts(res);
 
@@ -53,6 +55,7 @@ function Product() {
     const filtered = products.filter((item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    console.log("Filtered products:", filtered);
     setFilteredProducts(filtered);
   };
 
@@ -67,6 +70,7 @@ function Product() {
     }
     else{
       const filtered=products.filter((item)=> item.category === category)
+      console.log("Filtered by category:", filtered);
       setFilteredProducts(filtered);
     }
     setCurrentPage(1);

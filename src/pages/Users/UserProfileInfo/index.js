@@ -15,33 +15,63 @@ import { UserOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../helpers/cookie";
 import "../Users.scss";
-import { getUserById, updateUserField } from "../../../services/usersServices";
-import { useOutletContext } from "react-router-dom";
+import { getUserById, updateUser } from "../../../services/usersServices";
 const { Content } = Layout;
+
 function UserProfileInfo() {
-
-  const { user, updateUser } = useOutletContext();
   const [gender, setGender] = useState("");
-
   const [avatarUrl, setAvatarUrl] = useState("");
   const [uploading, setUploading] = useState(false);
-
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [name, setName] = useState("");
+
+  // Hàm cập nhật thông tin người dùng
+  const handleUpdate = async (updatedFields) => {
+    try {
+      const userId = getCookie("id"); // Lấy ID người dùng từ cookie
+      const updateData = {
+        fullname: name,
+        gender: gender,
+        email: newEmail || "",
+        phone: newPhone || "",
+        ...updatedFields, // Gộp thêm các trường cần cập nhật
+      };
+
+      await updateUser(userId, updateData); // Gọi API cập nhật
+      message.success("Cập nhật thông tin thành công!");
+    } catch (error) {
+      message.error(error.message || "Cập nhật thông tin thất bại!");
+    }
+  };
+
+  // Hàm cập nhật email
+  const handleUpdateEmail = async () => {
+    await handleUpdate({ email: newEmail });
+    setEmailModalOpen(false); // Đóng modal sau khi cập nhật
+  };
+
+  // Hàm cập nhật số điện thoại
+  const handleUpdatePhone = async () => {
+    await handleUpdate({ phone: newPhone });
+    setPhoneModalOpen(false); // Đóng modal sau khi cập nhật
+  };
+
+  // Lấy thông tin người dùng khi component được mount
   useEffect(() => {
     const fetchApi = async () => {
       const userId = getCookie("id");
       const res = await getUserById(userId);
-      updateUser(res);
       setGender(res.gender || "female");
       setName(res.fullname || "");
       setAvatarUrl(res.avatar || "");
+      setNewEmail(res.email || "");
+      setNewPhone(res.phone || "");
     };
     fetchApi();
-  }, [updateUser]);
+  }, []);
 
 
   return (
@@ -57,7 +87,7 @@ function UserProfileInfo() {
                 <Row className="user-profile__row" align="middle">
                   <Col span={6}>Tên đăng nhập</Col>
                   <Col span={18}>
-                    <b>{user.username}</b>
+                    <b>{name}</b>
                   </Col>
                 </Row>
                 <Row className="user-profile__row" align="middle">
@@ -73,15 +103,12 @@ function UserProfileInfo() {
                 <Row className="user-profile__row" align="middle">
                   <Col span={6}>Email</Col>
                   <Col span={18}>
-                    {user.email ? (
+                    {newEmail ? (
                       <>
-                        {user.email}
+                        {newEmail}
                         <Button
                           type="link"
-                          onClick={() => {
-                            setNewEmail(user.email || "");
-                            setEmailModalOpen(true);
-                          }}
+                          onClick={() => setEmailModalOpen(true)}
                         >
                           Thay Đổi
                         </Button>
@@ -89,10 +116,7 @@ function UserProfileInfo() {
                     ) : (
                       <Button
                         type="link"
-                        onClick={() => {
-                          setNewEmail("");
-                          setEmailModalOpen(true);
-                        }}
+                        onClick={() => setEmailModalOpen(true)}
                       >
                         Thay Đổi
                       </Button>
@@ -102,15 +126,12 @@ function UserProfileInfo() {
                 <Row className="user-profile__row" align="middle">
                   <Col span={6}>Số điện thoại</Col>
                   <Col span={18}>
-                    {user.phone ? (
+                    {newPhone ? (
                       <>
-                        {user.phone}{" "}
+                        {newPhone}
                         <Button
                           type="link"
-                          onClick={() => {
-                            setNewPhone(user.phone || "");
-                            setPhoneModalOpen(true);
-                          }}
+                          onClick={() => setPhoneModalOpen(true)}
                         >
                           Thay Đổi
                         </Button>
@@ -118,10 +139,7 @@ function UserProfileInfo() {
                     ) : (
                       <Button
                         type="link"
-                        onClick={() => {
-                          setNewPhone("");
-                          setPhoneModalOpen(true);
-                        }}
+                        onClick={() => setPhoneModalOpen(true)}
                       >
                         Thay Đổi
                       </Button>
@@ -131,7 +149,10 @@ function UserProfileInfo() {
                 <Row className="user-profile__row" align="middle">
                   <Col span={6}>Giới tính</Col>
                   <Col span={18}>
-                    <Radio.Group value={gender} onChange={handleUpdateGender}>
+                    <Radio.Group
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                    >
                       <Radio value="male">Nam</Radio>
                       <Radio value="female">Nữ</Radio>
                       <Radio value="other">Khác</Radio>
@@ -141,7 +162,7 @@ function UserProfileInfo() {
                 <Button
                   type="primary"
                   className="user-profile__save-btn"
-                  onClick={handleUpdate}
+                  onClick={() => handleUpdate({})}
                 >
                   Lưu
                 </Button>
@@ -158,7 +179,7 @@ function UserProfileInfo() {
                 </div>
                 <Upload
                   showUploadList={false}
-                  customRequest={handleUpload}
+                  customRequest={() => {}}
                   accept="image/png, image/jpeg"
                   beforeUpload={(file) => {
                     const isJpgOrPng =
@@ -223,4 +244,5 @@ function UserProfileInfo() {
     </>
   );
 }
+
 export default UserProfileInfo;

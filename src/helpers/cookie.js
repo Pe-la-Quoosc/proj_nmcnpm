@@ -14,3 +14,6 @@ export function getCookie(cname) {
     }
     return "";
 }
+export function deleteCookie(cname) {
+  document.cookie = `${cname}=; path=/; max-age=0;`;
+}
