@@ -33,6 +33,14 @@ export const updateUser= async (id, data) => {
   return response;
 };
 
+export const updateUserAddress = async (payload) => {
+  const response = await patch("api/user/update-address", payload); 
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to update user address");
+  }
+  return response; 
+};
+
 
 
 //

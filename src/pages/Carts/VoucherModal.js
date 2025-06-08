@@ -1,8 +1,9 @@
-import { Modal, Button, Row, Col, Divider, Input, Radio } from "antd";
+import { Modal, Button, Row, Col, Divider, Input, Radio, Tooltip } from "antd";
 import { useEffect, useState } from "react";
-import { getVoucherList } from "../../services/cartService";
+
 import "./Carts.scss";
 import VoucherDetail from "./VoucherDetail";
+import { getVouchers } from "../../services/voucherService";
 
 function VoucherModal({
   open,
@@ -13,7 +14,7 @@ function VoucherModal({
   selectedFreeShip,
   setSelectedFreeShip,
 }) {
-  const [voucher, setVoucher] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
   const [search, setSearch] = useState("");
   const [tempSelectedVoucher, setTempSelectedVoucher] =
     useState(selectedVoucher);
@@ -21,45 +22,47 @@ function VoucherModal({
     useState(selectedFreeShip);
 
   useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const res = await getVoucherList(); // Lấy danh sách voucher từ backend
-        setVoucher(res);
-      } catch (error) {
-        console.error("Failed to fetch vouchers:", error.message);
-      }
+    const fetchVouchers = async () => {
+      const data = await getVouchers();
+      // console.log("Fetched vouchers:", data);
+      setVouchers(data);
     };
-    fetchApi();
+    fetchVouchers();
   }, []);
 
-  useEffect(() => {
-    setTempSelectedVoucher(selectedVoucher);
-    setTempSelectedFreeShip(selectedFreeShip);
-  }, [selectedVoucher, selectedFreeShip, open]);
+  const isVoucherValid = (voucher) => {
+    const notExpired = new Date(voucher.expiry) > new Date();
+    const minOrderOk = totalPrice >= voucher.minOrderValue;
+    const usageOk =
+      voucher.usageLimit === null || voucher.usedCount < voucher.usageLimit;
+    return notExpired && minOrderOk && usageOk;
+  };
 
-  const filteredVouchers = voucher.filter(
-    (v) => v.code && v.code.toLowerCase().includes(search.toLowerCase())
+  const filteredVouchers = vouchers.filter(
+    (v) => !search || v.name.toLowerCase().includes(search.toLowerCase())
   );
+
   const freeShipVouchers = filteredVouchers.filter(
-    (v) => v.discount_type === "free_shipping"
+    (v) => v.type === "shipping"
   );
-  const discountVouchers = filteredVouchers.filter(
-    (v) => v.discount_type !== "free_shipping"
-  );
+  const discountVouchers = filteredVouchers.filter((v) => v.type === "product");
 
-  const handleSelectFreeShip = (v) => {
-    if (tempSelectedFreeShip?.code === v.code) {
-      setTempSelectedFreeShip(null);
-    } else {
-      setTempSelectedFreeShip(v);
+  const handleSelectFreeShip = (voucher) => {
+    console.log("Selected Free Ship Voucher:", voucher);
+    console.log(isVoucherValid(voucher));
+    if (isVoucherValid(voucher)) {
+      setTempSelectedFreeShip(
+        tempSelectedFreeShip?._id === voucher._id ? null : voucher
+      );
     }
   };
 
-  const handleSelectDiscount = (v) => {
-    if (tempSelectedVoucher?.code === v.code) {
-      setTempSelectedVoucher(null);
-    } else {
-      setTempSelectedVoucher(v);
+  const handleSelectDiscount = (voucher) => {
+    console.log("Selected ditcount Voucher:", voucher);
+    if (isVoucherValid(voucher)) {
+      setTempSelectedVoucher(
+        tempSelectedVoucher?._id === voucher._id ? null : voucher
+      );
     }
   };
 
@@ -97,39 +100,64 @@ function VoucherModal({
           />
         </Col>
       </Row>
+
       <Divider />
+
       <div className="voucher__title">Mã miễn phí vận chuyển</div>
       <div className="voucher__list voucher__list--freeship">
-        <Radio.Group value={tempSelectedFreeShip?.code || null}>
-          {freeShipVouchers.map((v) => (
-            <Radio
+        {freeShipVouchers.map((v) => {
+          const valid = isVoucherValid(v);
+          const isSelected = tempSelectedFreeShip?._id === v._id;
+
+          return (
+            <Tooltip
               key={v.code}
-              value={v.code}
-              checked={tempSelectedFreeShip?.code === v.code}
-              onClick={() => handleSelectFreeShip(v)}
-              disabled={totalPrice < v.min_order_amount}
+              title={!valid ? "Không đủ điều kiện áp dụng" : ""}
             >
-              <VoucherDetail voucher={v} />
-            </Radio>
-          ))}
-        </Radio.Group>
+              <div
+                onClick={() => handleSelectFreeShip(v)}
+                style={{ cursor: valid ? "pointer" : "not-allowed" }}
+              >
+                <Radio
+                  checked={isSelected}
+                  disabled={!valid}
+                  onChange={() => {}}
+                >
+                  <VoucherDetail voucher={v} />
+                </Radio>
+              </div>
+            </Tooltip>
+          );
+        })}
       </div>
+
       <Divider />
+
       <div className="voucher__title">Giảm giá</div>
       <div className="voucher__list voucher__list--discount">
-        <Radio.Group value={tempSelectedVoucher?.code || null}>
-          {discountVouchers.map((v) => (
-            <Radio
-              key={v.code}
-              value={v.code}
-              checked={tempSelectedVoucher?.code === v.code}
-              onClick={() => handleSelectDiscount(v)}
-              disabled={totalPrice < v.min_order_amount}
+        {discountVouchers.map((v) => {
+          const valid = isVoucherValid(v);
+          const isSelected = tempSelectedVoucher?._id === v._id;
+          
+          return (
+            <Tooltip
+              key={v._id} 
+              title={!valid ? "Không đủ điều kiện áp dụng" : ""}
             >
-              <VoucherDetail voucher={v} />
-            </Radio>
-          ))}
-        </Radio.Group>
+              <div 
+                onClick={() => handleSelectDiscount(v)}
+              >
+                <Radio 
+                  checked={isSelected}
+                  disabled={!valid}
+                  onChange={() => {}}
+                >
+                  <VoucherDetail voucher={v} />
+                </Radio>
+              </div>
+            </Tooltip>
+          );
+        })}
       </div>
     </Modal>
   );

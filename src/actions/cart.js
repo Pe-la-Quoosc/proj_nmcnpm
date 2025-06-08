@@ -1,35 +1,21 @@
-export const addToCart = (id, info) => {
-  return {
-    type: "ADD_TO_CART",
-    id: id,
-    info: info,
-  };
-};
+export const addToCart = (product, selectedAttributes, quantity = 1) => ({
+  type: "ADD_TO_CART",
+  payload: { product, selectedAttributes, quantity },
+});
 
-export const updateQuantity = (id, quantity = 1) => {
-  return {
-    type: "UPDATE_QUANTITY",
-    id: id,
-    quantity: quantity,
-  };
-};
-export const deleteItem = (id) => {
-  return {
-    type: "DELETE_ITEM",
-    id: id,
-  };
-};
-export const deleteAll = () => {
-  return {
-    type: "DELETE_ALL",
-  };
-};
+export const removeFromCart = (productId, selectedAttributes) => ({
+  type: "REMOVE_FROM_CART",
+  payload: { productId, selectedAttributes },
+});
 
-export const setCart = (cart) => {
-    return {
-        type: 'SET_CART',
-        cart: cart,
-    }
-}
+export const updateCartItemQuantity = (productId, selectedAttributes, quantity) => ({
+  type: "UPDATE_CART_ITEM",
+  payload: { productId, selectedAttributes, quantity },
+});
+
+export const clearCart = () => ({
+  type: "CLEAR_CART",
+});
+
 
 

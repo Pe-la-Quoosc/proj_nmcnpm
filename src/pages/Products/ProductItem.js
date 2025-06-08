@@ -2,36 +2,19 @@ import { Button, notification } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, updateQuantity } from "../../actions/cart";
 import { NavLink } from "react-router-dom";
-import { getCookie } from "../../helpers/cookie";
+// import { getCookie } from "../../helpers/cookie";
 function ProductItem(props) {
   const { item } = props;
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cartReducer);
-
-  const handleAddToCart = async () => {
-    if (cart.some((itemCart) => itemCart.id === item.id)) {
-      dispatch(updateQuantity(item.id));
-    } else {
-      dispatch(addToCart(item.id, item));
-    }
-    notification.success({
-      description: "Thêm thành công",
-      className: "custom-notification__success",
-      placement: "topRight",
-      duration: 2,
-    });
-    const userId = getCookie("id");
-    
-  };
-
   return (
     <>
-      <div className="product" key={item.id}>
-        <NavLink to={`/products/${item.id}`}>
+      <div className="product" key={item._id}>
+        <NavLink to={item._id ? `/products/${item._id}` : "#"}>
           <img
             className="product__image"
-            src={item.thumbnail}
+            src={item.images[0]}
             alt="anh san pham"
           />
           <div className="product__title"> {item.title}</div>
@@ -43,9 +26,6 @@ function ProductItem(props) {
           <p className="product__price--old">{item.price}</p>
           <p className="product__percent">{item.discountPercentage}</p>
          </NavLink>
-        <Button className="button" onClick={handleAddToCart} type="primary">
-          Thêm
-        </Button>
       </div>
     </>
   );

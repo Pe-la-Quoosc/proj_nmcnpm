@@ -8,75 +8,91 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories,setCategories]=useState([]);
-  const [sortBy,setSortBy]=useState("");
+  const [categories, setCategories] = useState([]);
+  const [sortBy, setSortBy] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(12);
-  
-  const prices=[
-    {
-      value:'',
-      label:'Mac dinh'
-    },
-    {
-      value:'priceAsc',
-      label:'Gia thap den cao'
-    },
-    {
-      value:'priceDesc',
-      label:'Gia cao den thap'
-    },
-    {
-      value:'discount',
-      label:'Giam gia nhieu'
-    },
-    
-  ]
 
-  useEffect(() => {
-    const fetchApi = async () => {
-      const res = await getProductList();
-      console.log("Fetched products:", res);
-      setProducts(res);
-      setFilteredProducts(res);
+  const prices = [
+    {
+      value: "",
+      label: "Mac dinh",
+    },
+    {
+      value: "priceAsc",
+      label: "Gia thap den cao",
+    },
+    {
+      value: "priceDesc",
+      label: "Gia cao den thap",
+    },
+    {
+      value: "discount",
+      label: "Giam gia nhieu",
+    },
+  ];
 
-      const uniqueCategories=[
-        "all",...new Set(res.map((item) => item.category)),
-      ].map((category)=>({
-        value:category,
-        label: category.charAt(0).toUpperCase() + category.slice(1)
-      }))
-      setCategories(uniqueCategories);
-    };
-    fetchApi();
-  }, []);
+useEffect(() => {
+  const fetchApi = async () => {
+    const res = await getProductList();
+    console.log("Fetched products:", res);
+    setProducts(res);
+    setFilteredProducts(res);
 
-  const handleSearch = () => {
-    const filtered = products.filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    console.log("Filtered products:", filtered);
-    setFilteredProducts(filtered);
+    const uniqueCategories = [
+      { value: "all", label: "Tất cả" }, // Default "all" option
+      ...Array.from(
+        new Set(
+          res
+            .map((item) => item.category?.name) // Extract the `name` field from `category`
+            .filter((name) => typeof name === "string" && name.trim() !== "") // Ensure valid strings
+        )
+      ).map((name) => ({
+        value: name,
+        label: name, // Use the `name` field for both value and label
+      })),
+    ];
+    setCategories(uniqueCategories);
   };
+  fetchApi();
+}, []);
+
+  const removeAccents = (str) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D")
+      .toLowerCase();
+  };
+  //Search
+  const handleSearch = () => {
+  const normalizedSearchTerm = removeAccents(searchTerm);
+  
+  const filtered = products.filter((item) =>
+    removeAccents(item.title).includes(normalizedSearchTerm)
+  );
+  
+  // console.log("Filtered products:", filtered);
+  setFilteredProducts(filtered);
+};
 
   const handleSortChange = (e) => {
-    setSortBy(e); 
+    setSortBy(e);
     setCurrentPage(1);
   };
-
-  const handleCategoryChange =(category)=>{
-    if(category==="all"){
+  
+  const handleCategoryChange = (category) => {
+    if (category === "all") {
       setFilteredProducts(products);
-    }
-    else{
-      const filtered=products.filter((item)=> item.category === category)
-      console.log("Filtered by category:", filtered);
+    } else {
+      const filtered = products.filter((item) => item.category?.name === category);
+      // console.log("Filtered by category:", filtered);
       setFilteredProducts(filtered);
     }
     setCurrentPage(1);
-     
   };
-  
+
   const handlePageChange = (e) => {
     setCurrentPage(e);
   };
@@ -121,7 +137,8 @@ function Product() {
             </div>
             <div>
               <div className="search">Phân loại:</div>
-              <Select className="Select"
+              <Select
+                className="Select"
                 showSearch
                 placeholder="Phân loại:"
                 filterOption={(input, option) =>
@@ -130,20 +147,19 @@ function Product() {
                     .includes(input.toLowerCase())
                 }
                 options={categories}
-                onChange={(value)=>handleCategoryChange(value)}
+                onChange={(value) => handleCategoryChange(value)}
               />
             </div>
             <div>
               <div className="search">Sắp xếp theo:</div>
-              <Select className="Select"
+              <Select
+                className="Select"
                 showSearch
                 placeholder="Giá:"
                 options={prices}
                 onChange={handleSortChange}
               />
             </div>
-            
-            
           </Col>
           <Col span={20} className="products-page__list">
             {currentProducts.length > 0 ? (

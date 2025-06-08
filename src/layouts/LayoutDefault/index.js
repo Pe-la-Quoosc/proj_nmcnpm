@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 import { Outlet, NavLink, useLocation } from "react-router-dom";
 import { getCookie } from "../../helpers/cookie";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import "../../styles/LayoutDefault.scss";
 import logo from "../../assets/images/logo-nav.png";
 import Cart1 from "../../Cart_1";
@@ -49,7 +49,7 @@ const footerData = {
 
 function LayoutDefault() {
   const token = getCookie("token");
-  console.log(token);
+  // console.log(token);
   const location = useLocation();
   const menuRef = useRef(null);
     const [menuOpen, setMenuOpen] = useState(false);

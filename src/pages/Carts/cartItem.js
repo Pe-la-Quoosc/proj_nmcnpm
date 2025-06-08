@@ -1,74 +1,91 @@
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteItem, updateQuantity } from "../../actions/cart";
-import { useRef } from "react";
-import { saveCartToDatabase } from "../../services/cartService";
+import { updateCartItem, deleteCartItem } from "../../services/cartService";
 import "./Carts.scss";
+import {addToCart,removeFromCart,updateCartItemQuantity,clearCart} from "../../actions/cart";
 
-function CartItem(props) {
-  const { item } = props;
+function CartItem({ item, refreshCart }) {
   const dispatch = useDispatch();
-  const inputRef = useRef();
-  const price = (
-    (item.info.price * (100 - item.info.discountPercentage)) / 100
-  ).toFixed(0);
-
-  const syncCartWithBackend = async () => {
-    try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      await saveCartToDatabase(cart); // Đồng bộ giỏ hàng với backend
-    } catch (error) {
-      console.error("Failed to sync cart with backend:", error.message);
-    }
-  };
-
+  const price = item.price.toLocaleString();
   const handleUp = async () => {
-    dispatch(updateQuantity(item.id, 1)); // Cập nhật Redux
-    inputRef.current.value = parseInt(inputRef.current.value) + 1;
-    await syncCartWithBackend(); // Đồng bộ với backend
+    try {
+      await updateCartItem(
+        item.product._id,
+        item.quantity + 1,
+        item.selectedAttributes
+      ); // Tăng số lượng
+      dispatch(updateCartItemQuantity(item.product._id, item.selectedAttributes, item.quantity + 1))
+      refreshCart(); // Làm mới giỏ hàng
+    } catch (error) {}
   };
 
   const handleDown = async () => {
-    if (item.quantity > 1) {
-      dispatch(updateQuantity(item.id, -1)); // Cập nhật Redux
-      inputRef.current.value = parseInt(inputRef.current.value) - 1;
-      await syncCartWithBackend(); // Đồng bộ với backend
-    }
+    try {
+      if (item.quantity > 1) {
+        await updateCartItem(
+          item.product._id,
+          item.quantity - 1,
+          item.selectedAttributes
+        ); 
+         dispatch(updateCartItemQuantity(item.product._id, item.selectedAttributes, item.quantity - 1));
+        refreshCart();
+      }
+    } catch (error) {}
   };
 
   const handleDelete = async () => {
-    dispatch(deleteItem(item.id)); // Xóa khỏi Redux
-    await syncCartWithBackend(); // Đồng bộ với backend
+    try {
+      // console.log("Deleting item:", item.product._id, item.selectedAttributes);
+      await deleteCartItem(item.product._id, item.selectedAttributes);
+      dispatch(removeFromCart(item.product._id, item.selectedAttributes));
+      refreshCart();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   return (
-    <>
-      <div className="cart__item" key={item.id}>
-        <img src={item.info.thumbnail} alt={item.info.title} />
-
-        <div className="cart__title">{item.info.title}</div>
-
-        <div className="cart__price">
-          <div className="cart__price--old">{price}</div>
-          <div className="cart__price--new">{price}</div>
-        </div>
-        <div className="cart__quantity">
-          <button onClick={handleDown} disabled={item.quantity <= 1}>
-            -
-          </button>
-          <input
-            ref={inputRef}
-            min={1}
-            value={item.quantity}
-            readOnly
-          />
-          <button onClick={handleUp}>+</button>
-        </div>
-        <div className="cart__total">{price * item.quantity}</div>
-        <div className="cart__remove">
-          <button onClick={handleDelete}>Xóa</button>
-        </div>
+    <div
+      className="cart__item"
+      key={`${item.product._id}-${JSON.stringify(item.selectedAttributes)}`}
+    >
+      {/* Ảnh */}
+      <Link to={`/products/${item.product._id}`}>
+        <img src={item.product.images[0]} alt={item.product.name} />
+      </Link>
+      {/* Tên sản phẩm */}
+      <Link to={`/products/${item.product._id}`} className="cart__title">
+        {item.product.title}
+      </Link>
+      {/* Thuộc tính đã chọn */}
+      <div className="cart__attributes">
+        {Object.entries(item.selectedAttributes).map(([key, value]) => (
+          <div key={key} className="cart__attribute">
+            <span>{key}:</span> <span>{value}</span>
+          </div>
+        ))}
       </div>
-    </>
+      {/* Đơn giá */}
+      <div className="cart__price">
+        <div className="cart__price--new">{price} VND</div>
+      </div>
+      {/* Số lượng */}
+      <div className="cart__quantity">
+        <button onClick={handleDown} disabled={item.quantity <= 1}>
+          -
+        </button>
+        <input min={1} value={item.quantity} readOnly />
+        <button onClick={handleUp}>+</button>
+      </div>
+      {/* Tổng tiền */}
+      <div className="cart__total">
+        {(item.price * item.quantity).toLocaleString()} VND
+      </div>
+      {/* Xóa sản phẩm */}
+      <div className="cart__remove">
+        <button onClick={handleDelete}>Xóa</button>
+      </div>
+    </div>
   );
 }
 
