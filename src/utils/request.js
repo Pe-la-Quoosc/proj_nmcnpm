@@ -72,3 +72,20 @@ export const patch = async (path, options) => {
   });
   return await response.json();
 };
+
+export const put = async (path, options) => {
+  const token = getCookie("token"); // Lấy token từ cookies
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }), // Thêm token vào header nếu tồn tại
+  };
+
+  const response = await fetch(API_DOMAIN + path, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(options),
+    credentials: "include", // Đảm bảo cookies được gửi kèm
+  });
+  return await response.json();
+};

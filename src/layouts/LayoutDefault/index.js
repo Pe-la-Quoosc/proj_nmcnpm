@@ -86,13 +86,13 @@ function LayoutDefault() {
           <NavLink className="NavLink" to="/">
             Trang chủ
           </NavLink>
-          {token ? (
+          {!!token ? (
             <>
               <NavLink className="NavLink" to="/products">
                 Sản phẩm
               </NavLink>
-              <NavLink className="NavLink" to="/exercise">
-                Bai tap
+              <NavLink className="NavLink" to="/blog">
+                Blog
               </NavLink>
             </>
           ) : (
@@ -100,8 +100,8 @@ function LayoutDefault() {
               <NavLink className="NavLink" to="/login">
                 Sản phẩm
               </NavLink>
-              <NavLink className="NavLink" to="/login">
-                Bai tap
+              <NavLink className="NavLink" to="/blog">
+                Blog
               </NavLink>
             </>
           )}

@@ -8,10 +8,9 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = async (e) => {
-    // console.log("Form values:", e);
     try {
       const response = await login(e.username, e.password);
-      // console.log("Login successful:", response);
+      console.log(response);
         if(!response.token){
           throw new Error("Login failed: No token received");
         }
@@ -25,7 +24,11 @@ function Login() {
         });
 
       dispatch(checkLogin(true));
-      navigate("/");
+      if (response.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
 
     } catch (error) {
       notification.error({

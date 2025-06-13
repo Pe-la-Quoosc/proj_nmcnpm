@@ -1,17 +1,25 @@
-
+import React from "react";
 import { Row, Col, Card } from "antd";
 import { useState } from "react";
-import "../../styles/Blog.scss";
-import { exercisesData } from "../../data/exerciseData";
+import "./Knowledge.scss";
 import { NavLink } from "react-router-dom";
-import { nutritionTopics } from "../../data/nutritionData";
+import bung from "../../assets/images/bung_blog.jpg";
+import chan from "../../assets/images/Leg-Day-Workout.webp";
+import tay from "../../assets/images/tay_blog.jpg";
+import vai from "../../assets/images/vai_blog.webp";
+import lung from "../../assets/images/lung_blog.webp";
+import nguc from "../../assets/images/benchhead.jpg";
+
 import schedules from "../../data/schedules";
 
-const muscleGroups = exercisesData.map(item => ({
-  id: item.id,
-  group: `Các bài tập ${item.group.toLowerCase()}`,
-  image: item.img,
-}));
+const muscleGroups = [
+  { id: "Ngực", group: "Các bài tập ngực", image: nguc },
+  { id: "Lưng", group: "Các bài tập lưng", image: lung },
+  { id: "Vai", group: "Các bài tập vai", image: vai },
+  { id: "Tay", group: "Các bài tập tay", image: tay },
+  { id: "Chân", group: "Các bài tập chân", image: chan },
+  { id: "Bụng", group: "Các bài tập bụng", image: bung },
+];
 
 
 
@@ -27,7 +35,7 @@ function Knowledge() {
         <Row gutter={[16, 16]}>
           {muscleGroups.map((group) => (
             <Col key={group.id} xs={24} sm={12} md={8} lg={8}>
-              <NavLink to={`/ExerciseDetail/${group.id}`}>
+              <NavLink to={`/knowledge/${group.id}`}>
                 <Card className="exercise-card" cover={<img alt={group.group} src={group.image} />}>
                   <div className="exercise-info">
                     <h3>{group.group}</h3>
@@ -38,31 +46,6 @@ function Knowledge() {
           ))}
         </Row>
       </section>
-
-      {/* Phần 2: Dinh dưỡng thể hình */}
-      <section className="blog-section">
-        <h2>Dinh dưỡng thể hình</h2>
-        <div style={{ textAlign: "right", marginTop: "16px" }}>
-          <NavLink to="/knowledge/nutritionlist" className="see-all-btn">
-            Xem tất cả các bài viết
-          </NavLink>
-        </div>
-        <div className="nutrition-stage-out">
-          {nutritionTopics.map((topic) => (
-            <Card
-              key={topic.id}
-              className="nutrition-card"
-              cover={<img alt={topic.title} src={topic.image} />}
-            >
-              <div className="nutrition-info">
-                <h3>{topic.title}</h3>
-                <p>{topic.description.split(".")[0]}.</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* Phần 3: Lịch tập cá nhân hóa */}
       <section className="blog-section">
         <h2>Lịch tập cá nhân hóa</h2>
@@ -111,6 +94,5 @@ function Knowledge() {
     </div>
   );
 }
-
 
 export default Knowledge;

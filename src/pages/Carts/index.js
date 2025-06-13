@@ -5,21 +5,25 @@ import CartList from "./cartList";
 import "./Carts.scss";
 import CartAddress from "./cartAddress";
 import { getCart, clearCart } from "../../services/cartService";
+import { createOrder } from "../../services/usersServices";
 import { useDispatch } from "react-redux";
+import PaymentModal from "./paymentMethodModal";
 
 const idx = 5000;
 function Carts() {
   const [isVoucherModalOpen, setVoucherModalOpen] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [selectedFreeShip, setSelectedFreeShip] = useState(null);
+  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false); // Quản lý trạng thái modal thanh toán
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
   const dispatch = useDispatch();
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({ products: [], CartTotal: 0 });
   const [activeKey, setActiveKey] = useState("1");
   const fetchCart = async () => {
     try {
       const response = await getCart();
-      setCart(response.products);
+      setCart(response); // Lưu toàn bộ object cart
       const totalQuantity = response.products.reduce(
         (sum, item) => sum + item.quantity,
         0
@@ -45,11 +49,10 @@ function Carts() {
       label: "Cart",
       children: (
         <>
-          <CartList cart={cart} refreshCart={fetchCart} />
-          {cart.length > 0 && (
-            <div className="cart__remove-all">
-              <button onClick={handleClearCart}>Xóa Tất Cả</button>
-            </div>
+          {cart && cart.length > 0 ? (
+            <CartList cart={cart} refreshCart={fetchCart} />
+          ) : (
+            <div>Giỏ hàng trống</div>
           )}
         </>
       ),
@@ -64,9 +67,10 @@ function Carts() {
       ),
     },
   ];
-  const totalPrice = cart.reduce((sum, item) => {
-    return sum + item.price * item.quantity;
-  }, 0);
+
+  const totalPrice = cart.CartTotal || 0;
+
+  
 
   const handleOpenVoucherModal = () => {
     setVoucherModalOpen(true);
@@ -75,14 +79,40 @@ function Carts() {
   const handleCloseVoucherModal = () => {
     setVoucherModalOpen(false);
   };
+  const handleOpenPaymentModal = () => {
+    setPaymentModalOpen(true); // Mở modal thanh toán
+  };
 
+  const handleClosePaymentModal = () => {
+    setPaymentModalOpen(false); // Đóng modal thanh toán
+  };
+  
+  const handlePlaceOrder = async () => {
+    if (!selectedPayment) {
+      alert("Vui lòng chọn phương thức thanh toán!");
+      return;
+    }
+    try {
+      console.log(selectedPayment)
+      await createOrder({
+        COD: selectedPayment === "COD",
+        couponApplied: !!selectedVoucher || !!selectedFreeShip,
+      });
+      fetchCart();
+      alert("Đặt hàng thành công!");
+    } catch (error) {
+      alert("Đặt hàng thất bại!");
+    }
+  }; 
+  
   const calculateDiscount = (voucher, totalPrice) => {
     if (!voucher) return 0;
 
     if (voucher.discountType === "fixed") {
       return Math.min(
         voucher.discountValue,
-        voucher.maxDiscountAmount || voucher.discountValue
+        voucher.maxDiscountAmount || voucher.discountValue,
+        totalPrice
       );
     } else if (voucher.discountType === "percentage") {
       const discount = (totalPrice * voucher.discountValue) / 100;
@@ -94,14 +124,37 @@ function Carts() {
 
   const totalVoucherDiscount =
     calculateDiscount(selectedVoucher, totalPrice) +
-    calculateDiscount(selectedFreeShip, totalPrice);
+    calculateDiscount(selectedFreeShip, idx);
 
   return (
     <>
       <Row gutter={[16, 16]} className="cart__container">
         <Col span={16}>
           <Collapse
-            items={items}
+            items={[
+              {
+                key: "1",
+                label: "Cart",
+                children: (
+                  <>
+                    {cart.products && cart.products.length > 0 ? (
+                      <CartList cart={cart.products} refreshCart={fetchCart} />
+                    ) : (
+                      <div>Giỏ hàng trống</div>
+                    )}
+                  </>
+                ),
+              },
+              {
+                key: "2",
+                label: "Address",
+                children: (
+                  <>
+                    <CartAddress />
+                  </>
+                ),
+              },
+            ]}
             defaultActiveKey={["1"]}
             onChange={setActiveKey}
             activeKey={activeKey}
@@ -154,33 +207,42 @@ function Carts() {
 
             <Divider />
             {/* Tổng tiền */}
-            {/* <div className="cart__summary--item">
+            <div className="cart__summary--item">
               <span>Tổng tiền</span>
               <span>{(totalPrice + idx).toLocaleString()}</span>
-            </div> */}
+            </div>
 
             {/* Tổng voucher giảm giá */}
-            {/* {(selectedFreeShip || selectedVoucher) && (
+            {(selectedFreeShip || selectedVoucher) && (
               <div className="cart__summary--item">
                 <span>Tổng voucher giảm giá</span>
-                <span className="cart__summary--discount">{`-${totalDiscount.toLocaleString()}`}</span>
+                <span className="cart__summary--discount">{`-${totalVoucherDiscount.toLocaleString()}`}</span>
               </div>
-            )} */}
+            )}
             {/* Phương thức thanh toán */}
-            {/* <div
+            <div
               className="cart__summary--item"
-              onClick={() => setPaymentOpen(true)}
+              onClick={handleOpenPaymentModal}
             >
               <span>Phương thức thanh toán</span>
-              <span className="cart__summary--coupon">{selectedPayment ? selectedPayment : "Chọn"}</span>
-            </div> */}
+              <span className="cart__summary--coupon">
+                {selectedPayment ? selectedPayment : "Chọn"}
+              </span>
+            </div>
             {/* Thanh Toán */}
-            {/* <div className="cart__summary--item cart__summary--total">
+            <div className="cart__summary--item cart__summary--total">
               <span>Tổng thanh toán:</span>
-              <span>{finalTotal.toLocaleString()}</span>
-            </div> */}
+              <span>
+                {(totalPrice + idx - totalVoucherDiscount).toLocaleString()}
+              </span>
+            </div>
 
-            <Button type="primary" block className="cart__summary--button">
+            <Button
+              type="primary"
+              block
+              className="cart__summary--button"
+              onClick={handlePlaceOrder}
+            >
               Place Order
             </Button>
           </Card>
@@ -194,6 +256,12 @@ function Carts() {
         setSelectedVoucher={setSelectedVoucher}
         selectedFreeShip={selectedFreeShip}
         setSelectedFreeShip={setSelectedFreeShip}
+      />
+      <PaymentModal
+        open={isPaymentModalOpen}
+        onClose={handleClosePaymentModal}
+        selectedPayment={selectedPayment}
+        setSelectedPayment={setSelectedPayment}
       />
     </>
   );

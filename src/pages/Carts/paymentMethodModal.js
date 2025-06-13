@@ -38,7 +38,7 @@ function PaymentMethodModal({
         onChange={(e) => setTempPayment(e.target.value)}
         style={{ width: "100%" }}
       >
-        <Radio value="Tiền mặt">Thanh toán tiền mặt</Radio>
+        <Radio value="COD">Thanh toán tiền mặt</Radio>
         <Radio value="Chuyển khoản">Chuyển khoản ngân hàng</Radio>
       </Radio.Group>
     </Modal>
