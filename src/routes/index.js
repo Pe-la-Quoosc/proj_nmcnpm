@@ -22,6 +22,7 @@ import Dashboard from "../pages/Admin/Dashboard";
 import UserManagement from "../pages/Admin/User";
 import ProductManagement from "../pages/Admin/Product";
 import OrderManagement from "../pages/Admin/Order";
+import OrderDetail from "../pages/Admin/OrderDetail";
 import AddNewProducts from "../pages/Admin/AddNewProducts";
 import ProductDetail from "../pages/Admin/ProductDetail";
 import BlogManagement from "../pages/Admin/Blog";
@@ -62,6 +63,7 @@ export const routes = [
             { path: "products/add-product", element: <AddNewProducts /> },
             { path: "products/:id", element: <ProductDetail /> }, // For editing existing products
             { path: "orders", element: <OrderManagement /> },
+            { path: "orders/:id", element: <OrderDetail /> }, 
             { path: "blogs", element: <BlogManagement /> },
         ]
     }

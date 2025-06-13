@@ -85,9 +85,9 @@ const User = () => {
 
     const columns = [
     {
-      title: "User",
-      dataIndex: "fullname",
-      key: "fullname",
+      title: "Tên người dùng",
+      dataIndex: "Họ và têntên",
+      key: "Họ và tên",
       render: (text, record) => (
         <Space>
           <Avatar src={record.avatar} size={48}>
@@ -104,7 +104,7 @@ const User = () => {
       ),
     },
     {
-      title: "Phone",
+      title: "Số điện thoại",
       dataIndex: "mobile",
       key: "mobile",
       render: (text) => <span>{text || "--"}</span>,
@@ -116,7 +116,7 @@ const User = () => {
       render: (text) => <span>{text || "--"}</span>,
     },
     {
-      title: "Role",
+      title: "Vai trò",
       dataIndex: "role",
       key: "role",
       render: (role) => (
@@ -126,7 +126,7 @@ const User = () => {
       ),
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       align: "center",
       render: (_, record) => (
