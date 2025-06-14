@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge } from 'antd';
 function Cart1() {
-const totalQuantity = useSelector((state) => state.cartReducer.totalQuantity);
+const totalQuantity = useSelector((state) => state.cart.totalQuantity);
   return (
     <>
       <Link to="/carts">

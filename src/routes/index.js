@@ -16,6 +16,7 @@ import UserAddress from "../pages/Users/UserAddress";
 import UserPassword from "../pages/Users/UserPassword";
 import UserOrders from "../pages/Users/UserOrders";
 import UserProfileInfo from "../pages/Users/UserProfileInfo";
+<<<<<<< HEAD
 
 import AdminLayout from "../layouts/LayoutDefault/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard";
@@ -27,6 +28,10 @@ import AddNewProducts from "../pages/Admin/AddNewProducts";
 import ProductDetail from "../pages/Admin/ProductDetail";
 import BlogManagement from "../pages/Admin/Blog";
 
+=======
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+>>>>>>> f2fe215 (update cart...)
 export const routes = [
     {
         path: "/",
@@ -50,7 +55,9 @@ export const routes = [
                     {path:"password",element:<UserPassword/>},
                     {path:"orders",element:<UserOrders/>},
                 ]
-            }
+            },
+            {path:"forgot",element:<ForgotPassword/>},
+            {path:"reset-password/:token", element:<ResetPassword/>}
         ],
     },
     {

@@ -1,7 +1,5 @@
 import { Row, Col } from "antd";
 import { Outlet, NavLink, useLocation } from "react-router-dom";
-import { getCookie } from "../../helpers/cookie";
-// import { useSelector } from "react-redux";
 import "../../styles/LayoutDefault.scss";
 import logo from "../../assets/images/logo-nav.png";
 import Cart1 from "../../Cart_1";
@@ -14,6 +12,13 @@ import {
   InstagramOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+import {  refreshToken } from "../../services/usersServices";
+import { checkLogin } from "../../actions/login";
+import { useDispatch } from "react-redux";
+import { getCookie } from "../../helpers/cookie";
+import { getCart } from "../../services/cartService";
+import { setCart } from "../../actions/cart";
 
 const footerData = {
   contact: {
@@ -47,27 +52,45 @@ const footerData = {
   ],
 };
 
+
 function LayoutDefault() {
-  const token = getCookie("token");
-  // console.log(token);
+  const islogin=useSelector((state)=>state.login);
+  const dispatch = useDispatch();
   const location = useLocation();
   const menuRef = useRef(null);
     const [menuOpen, setMenuOpen] = useState(false);
   const hideFooter =
     location.pathname === "/login" || location.pathname === "/register";
-
+useEffect(() => {
+  const autoLogin = async () => {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      const refreshed = await refreshToken();
+      if (refreshed) {
+        dispatch(checkLogin(true));
+      } else {
+        dispatch(checkLogin(false));
+      }
+    } else {
+      dispatch(checkLogin(true));
+    }
+  };
+  autoLogin();
+}, [dispatch]);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpen(false);
+  const fetchUserCart = async () => {
+    if (islogin) {
+      try {
+        const response = await getCart();
+        dispatch(setCart(response)); // response phải có cấu trúc { products: [...] }
+      } catch (err) {
+        console.error("Không lấy được giỏ hàng:", err.message);
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+    }
+  };
+  fetchUserCart();
+}, [islogin, dispatch]);
   return (
     <div>
       <header className="layout-default">
@@ -86,7 +109,8 @@ function LayoutDefault() {
           <NavLink className="NavLink" to="/">
             Trang chủ
           </NavLink>
-          {!!token ? (
+
+          {islogin ? (
             <>
               <NavLink className="NavLink" to="/products">
                 Sản phẩm
@@ -117,7 +141,7 @@ function LayoutDefault() {
           </NavLink>
         </div>
         <div className="layout-default__account">
-          {token ? (
+          {islogin ? (
             <>
               <Cart1 />
               <User1 />

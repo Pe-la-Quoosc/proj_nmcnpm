@@ -20,7 +20,8 @@ import ProductItem from "../Products/ProductItem";
 import ProductReviews from "./productReviews";
 import { addToCart } from "../../services/cartService";
 import { getCategoryAttributes } from "../../services/productsService";
-import { addToCart as addToCartAction, updateCartItemQuantity } from "../../actions/cart";
+import { addToCartAction } from "../../actions/cart";
+
 
 const { Title, Text } = Typography;
 
@@ -44,17 +45,9 @@ function DetailProduct() {
 
   const handleAddToCart = async () => {
     try {
-      const payload = {
-        productId: product._id,
-        quantity: 1,
-        selectedAttributes,
-      };
-      const response = await addToCart(
-        payload.productId,
-        payload.quantity,
-        payload.selectedAttributes
-      ); 
-      dispatch(addToCartAction(product, selectedAttributes, 1))
+      addToCart(product, 1, selectedAttributes);
+      dispatch(addToCartAction(product, selectedAttributes, 1));
+
       notification.success({
         description: "Thêm sản phẩm vào giỏ hàng thành công!",
         className: "custom-notification__success",
@@ -93,6 +86,7 @@ function DetailProduct() {
     };
     fetchAttributes();
   }, [product.category]);
+  console.log("product", product);
   return (
     <>
       <div className="section1">
@@ -219,14 +213,7 @@ function DetailProduct() {
       />
 
       <ProductReviews
-        reviews={product.review || []}
-        onSubmitReview={(newReview) => {
-          const updatedReviews = [
-            ...product.review,
-            { ...newReview, createdAt: new Date().toISOString() },
-          ];
-          setProduct({ ...product, review: updatedReviews });
-        }}
+        productId={product._id}
       />
 
       <div className="section3-title">Sản Phẩm Tương Tự</div>
