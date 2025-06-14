@@ -27,12 +27,12 @@ import OrderManagement from "../pages/Admin/Order";
 import OrderDetail from "../pages/Admin/OrderDetail";
 import AddNewProducts from "../pages/Admin/AddNewProducts";
 import ProductDetail from "../pages/Admin/ProductDetail";
-import BlogManagement from "../pages/Admin/Blog";
+import CategoryManagement from "../pages/Admin/Category";
 
-=======
+import BlogManagement from "../pages/Admin/Blog";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
->>>>>>> f2fe215 (update cart...)
+
 export const routes = [
     {
         path: "/",
@@ -64,17 +64,23 @@ export const routes = [
         ],
     },
     {
-        path: "/admin",
+    path: "/admin",
+    element: <LayoutDefault onlyHeader={true} />,
+    children: [
+        {
         element: <AdminLayout />,
         children: [
             { index: true, element: <Dashboard /> },
             { path: "users", element: <UserManagement /> },
             { path: "products", element: <ProductManagement /> },
             { path: "products/add-product", element: <AddNewProducts /> },
-            { path: "products/:id", element: <ProductDetail /> }, // For editing existing products
+            { path: "products/:id", element: <ProductDetail /> },
             { path: "orders", element: <OrderManagement /> },
-            { path: "orders/:id", element: <OrderDetail /> }, 
+            { path: "orders/:id", element: <OrderDetail /> },
             { path: "blogs", element: <BlogManagement /> },
+            { path: "categories", element: <CategoryManagement /> }
         ]
+        }
+    ]
     }
 ];

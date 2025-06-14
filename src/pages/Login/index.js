@@ -10,7 +10,6 @@ function Login() {
   const onFinish = async (e) => {
     try {
       const response = await login(e.username, e.password);
-<<<<<<< HEAD
       console.log(response);
         if(!response.token){
           throw new Error("Login failed: No token received");
@@ -31,7 +30,6 @@ function Login() {
         navigate("/");
       }
 
-=======
       if (!response.token) {
         throw new Error("Login failed: No token received");
       }
@@ -45,7 +43,6 @@ function Login() {
 
       dispatch(checkLogin(true));
       navigate("/");
->>>>>>> f2fe215 (update cart...)
     } catch (error) {
       notification.error({
         message: "Login failed",

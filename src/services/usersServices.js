@@ -1,17 +1,13 @@
-<<<<<<< HEAD
+
 import { post,get,patch, put } from "../utils/request";
-=======
-import { post,get,patch } from "../utils/request";
+
 const API_DOMAIN = "http://localhost:3002/";
->>>>>>> f2fe215 (update cart...)
+
 //
 export const login = async (username, password) => {
-  // console.log("Sending login request:", username, password);
   const response = await post("api/user/login", { username, password });
-  // console.log("Login response:", response);
   if (response.token) {
       document.cookie = `accessToken=${response.token}; path=/; max-age=3600`; // Token tồn tại trong 1 giờ
-      // console.log("Token set in cookie:", response.token);
     }
   if (!response || response.error) {
     throw new Error(response.error || "Login failed");
@@ -37,7 +33,7 @@ export const getUserById = async (id) => {
   }
   return response;
 }
-<<<<<<< HEAD
+
 
 export const getAllUsers = async (params) => {
   const response = await get("api/user/all-users", params);
@@ -49,7 +45,7 @@ export const getAllUsers = async (params) => {
 
 export const updateUser= async (id, data) => {
   const response = await post(`api/user/${id}`, data);
-=======
+}
 //Get current user
 export const getCurrentUser = async () => {
   const response = await get("api/user/me");
@@ -61,7 +57,6 @@ export const getCurrentUser = async () => {
 //Update current user
 export const updateCurrentUser = async (data) => {
   const response = await patch(`api/user/update-me`, data);
->>>>>>> f2fe215 (update cart...)
   if (!response || response.error) {
     throw new Error(response.error || "Failed to update user data");
   }
@@ -76,7 +71,6 @@ export const updateUserAddress = async (payload) => {
   return response; 
 };
 
-<<<<<<< HEAD
 export const blockUser = async (id) => {
   const response = await put(`api/user/block-user/${id}`);
   if (!response || response.error) {
@@ -100,29 +94,12 @@ export const createOrder = async (payload) => {
   }
   return response;
 }
-=======
+
+
 export const sendForgotPasswordEmail = async (email) =>{
   const response=await post("api/user/forgot-password",{email});
   return response;
 }
-
-export const resetPassword = async(token,password)=>{
-  const response = await post(`api/user/reset-password/${token}`,{password});
-  return response;
-}
-
-export const updatePassword = async(id,password)=>{
-  const response = await post("api/user/update-password",{id,password});
-  return response;
-}
-
-export const logout = async () => {
-    const response = await post("api/user/logout");
-    if (!response || response.error) {
-      throw new Error(response.error || "Logout failed");
-    }
-    return response;
-};
 
 export const refreshToken = async () => {
   try {
@@ -140,9 +117,31 @@ export const refreshToken = async () => {
   }
 };
 
+export const logout = async () => {
+    const response = await post("api/user/logout");
+    if (!response || response.error) {
+      throw new Error(response.error || "Logout failed");
+    }
+    return response;
+};
 
->>>>>>> f2fe215 (update cart...)
+export const updatePassword = async(id,password)=>{
+  const response = await post("api/user/update-password",{id,password});
+  return response;
+}
 
+export const getOrder = async () => {
+  const response = await get("api/user/order");
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to fetch orders");
+  }
+  return response;
+};
 
-
-
+export const userCoupon = async ({ coupon, freeship }) => {
+  const response = await put("api/user/cart/apply-coupon",{ coupon, freeship });
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to apply coupon");
+  }
+  return response;
+};

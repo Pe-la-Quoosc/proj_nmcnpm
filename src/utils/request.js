@@ -88,10 +88,9 @@ export const patch = async (path, options) => {
   });
   return await response.json();
 };
-<<<<<<< HEAD
 
 export const put = async (path, options) => {
-  const token = getCookie("token"); // Lấy token từ cookies
+  const token = getCookie("accessToken"); // Lấy token từ cookies
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -106,5 +105,3 @@ export const put = async (path, options) => {
   });
   return await response.json();
 };
-=======
->>>>>>> f2fe215 (update cart...)
