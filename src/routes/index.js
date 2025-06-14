@@ -16,6 +16,8 @@ import UserAddress from "../pages/Users/UserAddress";
 import UserPassword from "../pages/Users/UserPassword";
 import UserOrders from "../pages/Users/UserOrders";
 import UserProfileInfo from "../pages/Users/UserProfileInfo";
+import Contact from "../pages/Contact";
+import About from "../pages/About";
 
 import AdminLayout from "../layouts/LayoutDefault/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard";
@@ -41,6 +43,8 @@ export const routes = [
             {path:"knowledge",element:<Knowledge/>},
             {path:"blog",element:<Blog/>},
             {path: "blog/:id", element: <BlogDetail />},
+            {path: "contact", element: <Contact />},
+            {path: "about", element: <About />},
             {path: "knowledge/:id", element: <ExerciseDetail /> },
             {path:"carts",element:<Carts/>},
             {path:"user",element:<User/>,
