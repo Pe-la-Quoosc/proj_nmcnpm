@@ -2,26 +2,21 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
-import { post } from "../../utils/request";
-import { deleteCookie } from "../../helpers/cookie";
-
+import { logout } from "../../services/usersServices";
 
 function LogOut() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const logout = async () => {
-      try {
-        await post("api/user/logout");
-        deleteCookie("token"); // Xóa cookie "token"
-        dispatch(checkLogin(false)); // Cập nhật trạng thái đăng nhập
-        navigate("/login"); // Điều hướng về trang đăng nhập
-      } catch (error) {
-        console.error("Logout failed:", error);
-      }
+useEffect(() => {
+    const handleLogout = async () => {
+        const response = await logout();
+        document.cookie = `accessToken=; path=/; max-age=0`;
+        // console.log("Logout response:", response);
+        dispatch(checkLogin(false));
+        navigate("/login");
     };
-    logout();
+    handleLogout();
   }, [dispatch, navigate]);
 
   return <></>;

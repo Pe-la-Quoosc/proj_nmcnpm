@@ -12,40 +12,52 @@ import {
   Upload,
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getCookie } from "../../../helpers/cookie";
 import "../Users.scss";
-import { getUserById, updateUser } from "../../../services/usersServices";
+import { getCurrentUser, updateCurrentUser } from "../../../services/usersServices";
 const { Content } = Layout;
 
 function UserProfileInfo() {
+  const { user, updateUser } = useOutletContext();
   const [gender, setGender] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [uploading, setUploading] = useState(false);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [name, setName] = useState("");
 
-  // Hàm cập nhật thông tin người dùng
-  const handleUpdate = async (updatedFields) => {
-    try {
-      const userId = getCookie("id"); // Lấy ID người dùng từ cookie
-      const updateData = {
-        fullname: name,
-        gender: gender,
-        email: newEmail || "",
-        phone: newPhone || "",
-        ...updatedFields, // Gộp thêm các trường cần cập nhật
-      };
+const fillUserData = (user) => {
+  setName(user.fullname || "");
+  setGender(user.gender || "female");
+  setAvatarUrl(user.avatar || "");
+  setNewEmail(user.email || "");
+  setNewPhone(user.mobile || "");
+};
 
-      await updateUser(userId, updateData); // Gọi API cập nhật
-      message.success("Cập nhật thông tin thành công!");
-    } catch (error) {
-      message.error(error.message || "Cập nhật thông tin thất bại!");
-    }
-  };
+  // Hàm cập nhật thông tin người dùng
+const handleUpdate = async (updatedFields) => {
+  try {
+    const updateData = {
+      fullname: name,
+      gender,
+      email: newEmail,
+      mobile: newPhone,
+      ...updatedFields,
+    };
+
+    const updatedUser = await updateCurrentUser(updateData); // Trả về user đã cập nhật
+
+    fillUserData(updatedUser); // Đổ dữ liệu mới vào state
+    updateUser(updatedUser);   // Nếu bạn dùng context từ useOutletContext()
+
+    message.success("Cập nhật thông tin thành công!");
+  } catch (error) {
+    message.error(error.message || "Cập nhật thông tin thất bại!");
+  }
+};
+
 
   // Hàm cập nhật email
   const handleUpdateEmail = async () => {
@@ -55,23 +67,13 @@ function UserProfileInfo() {
 
   // Hàm cập nhật số điện thoại
   const handleUpdatePhone = async () => {
-    await handleUpdate({ phone: newPhone });
+    await handleUpdate({ mobile: newPhone });
     setPhoneModalOpen(false); // Đóng modal sau khi cập nhật
   };
 
-  // Lấy thông tin người dùng khi component được mount
-  useEffect(() => {
-    const fetchApi = async () => {
-      const userId = getCookie("id");
-      const res = await getUserById(userId);
-      setGender(res.gender || "female");
-      setName(res.fullname || "");
-      setAvatarUrl(res.avatar || "");
-      setNewEmail(res.email || "");
-      setNewPhone(res.phone || "");
-    };
-    fetchApi();
-  }, []);
+useEffect(() => {
+  if (user) fillUserData(user);
+}, [user]);
 
 
   return (
@@ -84,12 +86,6 @@ function UserProfileInfo() {
                 <div className="user-profile__desc">
                   Quản lý thông tin hồ sơ để bảo mật tài khoản
                 </div>
-                <Row className="user-profile__row" align="middle">
-                  <Col span={6}>Tên đăng nhập</Col>
-                  <Col span={18}>
-                    <b>{name}</b>
-                  </Col>
-                </Row>
                 <Row className="user-profile__row" align="middle">
                   <Col span={6}>Tên</Col>
                   <Col span={18}>
@@ -195,10 +191,7 @@ function UserProfileInfo() {
                   }}
                 >
                   <div>
-                    <Button
-                      className="user-profile__choose-img-btn"
-                      loading={uploading}
-                    >
+                    <Button className="user-profile__choose-img-btn">
                       Chọn Ảnh
                     </Button>
                   </div>

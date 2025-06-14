@@ -1,4 +1,4 @@
-const loginReducer=(state=false,action)=>{
+const loginReducer=(state={},action)=>{
     switch(action.type){
         case 'CHECK_LOGIN':
             return action.status;

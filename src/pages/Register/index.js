@@ -1,8 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { register } from "../../services/usersServices";
+import { login, register } from "../../services/usersServices";
 import { Row, Col, Button, Form, Input, notification } from "antd";
+import { checkLogin } from "../../actions/login";
+import { useDispatch } from "react-redux";
 import "../../styles/SignUp.scss";
 function Register() {
+  const dispatch=useDispatch();
   const navigate = useNavigate();
 
   const onFinish = async (e) => {
@@ -16,7 +19,8 @@ function Register() {
         email: email,
       };
       const response = await register(options);
-      if (response) {
+      const loginRes=await login(username,password);
+      if (loginRes) {
         notification.success({
           message: "Register successful",
           description: "Welcome!",
@@ -24,9 +28,11 @@ function Register() {
           placement: "topRight",
           duration: 1,
       });
+      
       setTimeout(()=>{
+        dispatch(checkLogin(true));
         navigate("/");
-      },2000);
+      },1000);
       
       }
     } catch (error) {

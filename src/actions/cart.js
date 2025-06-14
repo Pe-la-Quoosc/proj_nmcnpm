@@ -1,4 +1,4 @@
-export const addToCart = (product, selectedAttributes, quantity = 1) => ({
+export const addToCartAction = (product, selectedAttributes, quantity = 1) => ({
   type: "ADD_TO_CART",
   payload: { product, selectedAttributes, quantity },
 });
@@ -16,6 +16,13 @@ export const updateCartItemQuantity = (productId, selectedAttributes, quantity) 
 export const clearCart = () => ({
   type: "CLEAR_CART",
 });
+
+export const setCart = (cart) => ({
+  type: "SET_CART",
+  payload: cart,
+});
+
+
 
 
 
