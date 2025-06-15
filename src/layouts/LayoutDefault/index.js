@@ -1,5 +1,7 @@
 import { Row, Col } from "antd";
 import { Outlet, NavLink, useLocation } from "react-router-dom";
+import { getCookie } from "../../helpers/cookie";
+// import { useSelector } from "react-redux";
 import "../../styles/LayoutDefault.scss";
 import logo from "../../assets/images/5c4638a6-fafb-4220-9e1a-3d7e8c642166.png";
 import Cart1 from "../../Cart_1";
@@ -12,6 +14,7 @@ import {
   InstagramOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
+<<<<<<< HEAD
 import { useSelector } from "react-redux";
 import { refreshToken } from "../../services/usersServices";
 import { checkLogin } from "../../actions/login";
@@ -19,6 +22,8 @@ import { useDispatch } from "react-redux";
 import { getCookie } from "../../helpers/cookie";
 import { getCart } from "../../services/cartService";
 import { setCart } from "../../actions/cart";
+=======
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 
 const footerData = {
   contact: {
@@ -62,13 +67,19 @@ const footerData = {
 };
 
 function LayoutDefault({ onlyHeader = false }) {
+<<<<<<< HEAD
   const islogin = useSelector((state) => state.login);
   const dispatch = useDispatch();
+=======
+  const token = getCookie("accessToken");
+  // console.log(token);
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
   const location = useLocation();
   const menuRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const hideFooter =
     location.pathname === "/login" || location.pathname === "/register";
+<<<<<<< HEAD
   useEffect(() => {
     const autoLogin = async () => {
       const accessToken = getCookie("accessToken");
@@ -99,6 +110,21 @@ function LayoutDefault({ onlyHeader = false }) {
     };
     fetchUserCart();
   }, [islogin, dispatch]);
+=======
+
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
   return (
     <div>
       <header className="layout-default">
@@ -118,8 +144,7 @@ function LayoutDefault({ onlyHeader = false }) {
           <NavLink className="NavLink" to="/">
             Trang chủ
           </NavLink>
-
-          {islogin ? (
+          {!!token ? (
             <>
               <NavLink className="NavLink" to="/products">
                 Sản phẩm
@@ -150,7 +175,7 @@ function LayoutDefault({ onlyHeader = false }) {
           </NavLink>
         </div>
         <div className="layout-default__account">
-          {islogin ? (
+          {token ? (
             <>
               <Cart1 />
               <User1 />
@@ -167,10 +192,14 @@ function LayoutDefault({ onlyHeader = false }) {
           )}
         </div>
       </header>
-      <main>
+      <main style={{ minHeight: "60vh" }}>
         <Outlet />
       </main>
+<<<<<<< HEAD
         {!onlyHeader && !hideFooter && (
+=======
+      {!onlyHeader && !hideFooter && (
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
         <footer className="ava-footer gymbe-footer">
           <div className="container">
             <Row gutter={[32, 32]} className="footer-content">

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import "./Carts.scss";
 import VoucherDetail from "./VoucherDetail";
 import { getVouchers } from "../../services/voucherService";
+import { userCoupon } from "../../services/usersServices"; // Thêm dòng này
+
 
 function VoucherModal({
   open,
@@ -79,7 +81,16 @@ function VoucherModal({
         <Button
           key="ok"
           type="primary"
-          onClick={() => {
+          onClick={async () => {
+            try {
+              // Gọi userCoupon với cả hai loại voucher nếu có
+              await userCoupon({
+                coupon: tempSelectedVoucher?.name || null,
+                freeship: tempSelectedFreeShip?.name || null,
+              });
+            } catch (error) {
+              // Có thể hiện thông báo lỗi nếu cần
+            }
             setSelectedVoucher(tempSelectedVoucher);
             setSelectedFreeShip(tempSelectedFreeShip);
             onClose();

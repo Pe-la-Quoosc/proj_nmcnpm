@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-// import "./AdminLayout.css"; // Tạo file này để style nếu muốn
+import { DashboardOutlined, AppstoreOutlined, UserOutlined, ShoppingCartOutlined, FileTextOutlined } from "@ant-design/icons";
+import "../../styles/AdminSidebar.scss"
+
 
 const AdminLayout = () => {
   return (
@@ -11,26 +13,37 @@ const AdminLayout = () => {
           <ul style={{ listStyle: "none", padding: 0 }}>
             <li>
               <NavLink to="/admin" end style={({ isActive }) => ({ color: isActive ? "#ffd700" : "#fff" })}>
+                <span> <DashboardOutlined /></span>
                 Dashboard
-              </NavLink>
+              </NavLink>  
             </li>
             <li>
               <NavLink to="/admin/users" style={({ isActive }) => ({ color: isActive ? "#ffd700" : "#fff" })}>
+                <span> <UserOutlined /></span>
                 Quản lý người dùng
               </NavLink>
             </li>
             <li>
+              <NavLink to="/admin/categories" style={({ isActive }) => ({ color: isActive ? "#ffd700" : "#fff" })}>
+                <span> <AppstoreOutlined /></span>
+                Quản lý danh mục
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/admin/products" style={({ isActive }) => ({ color: isActive ? "#ffd700" : "#fff" })}>
+                <span> <AppstoreOutlined /></span>
                 Quản lý sản phẩm
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/orders" style={({ isActive }) => ({ color: isActive ? "#ffd700" : "#fff" })}>
+                <span> <ShoppingCartOutlined /></span>
                 Quản lý đơn hàng
               </NavLink>
             </li>
             <li>
               <NavLink to="/admin/blogs" style={({ isActive }) => ({ color: isActive ? "#ffd700" : "#fff" })}>
+                <span> <FileTextOutlined /></span>
                 Quản lý bài viết
               </NavLink>
             </li>

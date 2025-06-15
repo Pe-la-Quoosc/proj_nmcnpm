@@ -89,7 +89,7 @@ export const patch = async (path, options) => {
 };
 
 export const put = async (path, options) => {
-  const token = getCookie("token"); // Lấy token từ cookies
+  const token = getCookie("accessToken"); // Lấy token từ cookies
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -104,4 +104,7 @@ export const put = async (path, options) => {
   });
   return await response.json();
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e

@@ -1,14 +1,17 @@
 
 import { post,get,patch, put } from "../utils/request";
+<<<<<<< HEAD
 const API_DOMAIN = "http://localhost:3002/";
+=======
+
+const API_DOMAIN = "http://localhost:3002/";
+
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 //
 export const login = async (username, password) => {
-  // console.log("Sending login request:", username, password);
   const response = await post("api/user/login", { username, password });
-  // console.log("Login response:", response);
   if (response.token) {
       document.cookie = `accessToken=${response.token}; path=/; max-age=3600`; // Token tồn tại trong 1 giờ
-      // console.log("Token set in cookie:", response.token);
     }
   if (!response || response.error) {
     throw new Error(response.error || "Login failed");
@@ -26,7 +29,31 @@ export const register = async (options) => {
     throw new Error(error.message || "Registration failed");
   }
 };
+<<<<<<< HEAD
 
+=======
+//
+export const getUserById = async (id) => {
+  const response = await get(`api/user/${id}`);
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to fetch user data");
+  }
+  return response;
+}
+
+
+export const getAllUsers = async (params) => {
+  const response = await get("api/user/all-users", params);
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to fetch users");
+  }
+  return response;
+};
+
+export const updateUser= async (id, data) => {
+  const response = await post(`api/user/${id}`, data);
+}
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 //Get current user
 export const getCurrentUser = async () => {
   const response = await get("api/user/me");
@@ -83,11 +110,17 @@ export const createOrder = async (payload) => {
   }
   return response;
 }
+<<<<<<< HEAD
 //Send forgot password email
+=======
+
+
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 export const sendForgotPasswordEmail = async (email) =>{
   const response=await post("api/user/forgot-password",{email});
   return response;
 }
+<<<<<<< HEAD
 // Update new password
 export const resetPassword = async(token,password)=>{
  const response = await patch(`api/user/reset-password/${token}`,{password});
@@ -102,6 +135,8 @@ export const logout = async () => {
     }
     return response;
 };
+=======
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 
 export const refreshToken = async () => {
   try {
@@ -119,6 +154,7 @@ export const refreshToken = async () => {
   }
 };
 
+<<<<<<< HEAD
 export const getAllUsers = async (params) => {
   const response = await get("api/user/all-users", params);
   if (!response || response.error) {
@@ -130,5 +166,33 @@ export const getAllUsers = async (params) => {
 
 
 
+=======
+export const logout = async () => {
+    const response = await post("api/user/logout");
+    if (!response || response.error) {
+      throw new Error(response.error || "Logout failed");
+    }
+    return response;
+};
 
+export const updatePassword = async(id,password)=>{
+  const response = await post("api/user/update-password",{id,password});
+  return response;
+}
+>>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 
+export const getOrder = async () => {
+  const response = await get("api/user/order");
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to fetch orders");
+  }
+  return response;
+};
+
+export const userCoupon = async ({ coupon, freeship }) => {
+  const response = await put("api/user/cart/apply-coupon",{ coupon, freeship });
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to apply coupon");
+  }
+  return response;
+};

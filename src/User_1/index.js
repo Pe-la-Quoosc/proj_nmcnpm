@@ -17,7 +17,7 @@ function User1() {
       key: "2",
       label: (
         <NavLink className="NavLink" to="/admin">
-          Quan li
+          Quản lí 
         </NavLink>
       ),
     },
@@ -25,7 +25,7 @@ function User1() {
       key: "3",
       label: (
         <NavLink className="NavLink" to="/logout">
-          Dang xuat
+          Đăng xuất
         </NavLink>
       ),
     },

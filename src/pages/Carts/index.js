@@ -7,6 +7,7 @@ import CartAddress from "./cartAddress";
 import { getCart, clearCart } from "../../services/cartService";
 import { createOrder } from "../../services/usersServices";
 import { useDispatch } from "react-redux";
+import { createPayOSOrder } from "../../services/paymentService"; 
 import PaymentModal from "./paymentMethodModal";
 
 const idx = 5000;
@@ -87,22 +88,31 @@ function Carts() {
   };
   
   const handlePlaceOrder = async () => {
-    if (!selectedPayment) {
-      alert("Vui lòng chọn phương thức thanh toán!");
-      return;
-    }
-    try {
-      console.log(selectedPayment)
+  if (!selectedPayment) {
+    alert("Vui lòng chọn phương thức thanh toán!");
+    return;
+  }
+  try {
+    if (selectedPayment === "Chuyển khoản") {
+      const data = await createPayOSOrder("Thanh toán đơn hàng");
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        alert(data.error || "Không lấy được link thanh toán!");
+      }
+    } else {
+      // Đặt hàng COD như cũ
       await createOrder({
-        COD: selectedPayment === "COD",
+        COD: true,
         couponApplied: !!selectedVoucher || !!selectedFreeShip,
       });
       fetchCart();
       alert("Đặt hàng thành công!");
-    } catch (error) {
-      alert("Đặt hàng thất bại!");
     }
-  }; 
+  } catch (error) {
+    alert("Đặt hàng thất bại!");
+  }
+};
   
   const calculateDiscount = (voucher, totalPrice) => {
     if (!voucher) return 0;
