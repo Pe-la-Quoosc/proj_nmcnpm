@@ -8,6 +8,7 @@ import qa_img from "../../assets/images/tải xuống.jpg";
 import subimg from "../../assets/images/Dumbbell An Old Gym Setting With Dumbbells Backgrounds _ JPG Free Download - Pikbest.jpg";
 import home_img from "../../assets/images/home-img.png";
 import { exercisesData } from "../../data/exerciseData"; 
+import { useEffect, useState } from "react";
 
 const sectionImages = exercisesData.map(item => ({
   id: item.id,
@@ -22,8 +23,22 @@ const carouselItems = [
 ];
 
 function Home() {
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") === "success") {
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+    }
+  }, []);
   return (
-    <>
+      <>
+        {showSuccess && (
+          <div className="alert alert-success" style={{textAlign: "center", margin: 16, color: "#52c41a", fontWeight: "bold"}}>
+            Thanh toán thành công!
+          </div>
+        )}
       <div className="home-page">
         {/* Section1 */}
         <section className="home-section">
