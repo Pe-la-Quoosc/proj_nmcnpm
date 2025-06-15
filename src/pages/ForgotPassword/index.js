@@ -1,21 +1,20 @@
 import { Form, Input, Button, notification } from "antd";
 import { sendForgotPasswordEmail } from "../../services/usersServices"; // API gửi email
 import { useNavigate } from "react-router-dom";
-
+import "./ForgotPassword.scss";
 function ForgotPassword() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
-      const response = await sendForgotPasswordEmail(values.email); // Gửi yêu cầu đặt lại mật khẩu
-    //   console.log("Forgot password response:", response);
+      const response = await sendForgotPasswordEmail(values.email);
       notification.success({
         message: "Email Sent",
         description: "Please check your email for the reset link.",
         placement: "topRight",
         duration: 2,
       });
-      navigate("/login"); // Quay lại trang đăng nhập
+      navigate("/login");
     } catch (error) {
       notification.error({
         message: "Failed to send email",
@@ -38,7 +37,7 @@ function ForgotPassword() {
             { type: "email", message: "Please enter a valid email!" },
           ]}
         >
-          <Input />
+          <Input placeholder="...@gmail.com" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">

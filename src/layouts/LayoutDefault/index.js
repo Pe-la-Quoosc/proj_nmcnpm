@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 import { Outlet, NavLink, useLocation } from "react-router-dom";
 import "../../styles/LayoutDefault.scss";
-import logo from "../../assets/images/logo-nav.png";
+import logo from "../../assets/images/5c4638a6-fafb-4220-9e1a-3d7e8c642166.png";
 import Cart1 from "../../Cart_1";
 import User1 from "../../User_1";
 import { useState, useEffect, useRef } from "react";
@@ -13,7 +13,7 @@ import {
   YoutubeOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import {  refreshToken } from "../../services/usersServices";
+import { refreshToken } from "../../services/usersServices";
 import { checkLogin } from "../../actions/login";
 import { useDispatch } from "react-redux";
 import { getCookie } from "../../helpers/cookie";
@@ -29,10 +29,22 @@ const footerData = {
       "gymbeexclusive@gmail.com",
     ],
     socials: [
-      { icon: <TwitterOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
-      { icon: <FacebookOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
-      { icon: <InstagramOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
-      { icon: <YoutubeOutlined />, link: "https://www.facebook.com/tri.minh.568702" },
+      {
+        icon: <TwitterOutlined />,
+        link: "https://www.facebook.com/tri.minh.568702",
+      },
+      {
+        icon: <FacebookOutlined />,
+        link: "https://www.facebook.com/tri.minh.568702",
+      },
+      {
+        icon: <InstagramOutlined />,
+        link: "https://www.facebook.com/tri.minh.568702",
+      },
+      {
+        icon: <YoutubeOutlined />,
+        link: "https://www.facebook.com/tri.minh.568702",
+      },
     ],
   },
   categories: [
@@ -40,72 +52,69 @@ const footerData = {
     "Performance",
     "T-Shirts",
     "Underwear",
-    "Top Brands",
-    "Online Exclusive",
   ],
   customerService: [
     "Chính sách bảo mật",
     "Điều khoản dịch vụ",
     "Hướng dẫn mua hàng",
     "Liên hệ hỗ trợ",
-
   ],
 };
 
-
-function LayoutDefault() {
-  const islogin=useSelector((state)=>state.login);
+function LayoutDefault({ onlyHeader = false }) {
+  const islogin = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const location = useLocation();
   const menuRef = useRef(null);
-    const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const hideFooter =
     location.pathname === "/login" || location.pathname === "/register";
-useEffect(() => {
-  const autoLogin = async () => {
-    const accessToken = getCookie("accessToken");
-    if (!accessToken) {
-      const refreshed = await refreshToken();
-      if (refreshed) {
-        dispatch(checkLogin(true));
+  useEffect(() => {
+    const autoLogin = async () => {
+      const accessToken = getCookie("accessToken");
+      if (!accessToken) {
+        const refreshed = await refreshToken();
+        if (refreshed) {
+          dispatch(checkLogin(true));
+        } else {
+          dispatch(checkLogin(false));
+        }
       } else {
-        dispatch(checkLogin(false));
+        dispatch(checkLogin(true));
       }
-    } else {
-      dispatch(checkLogin(true));
-    }
-  };
-  autoLogin();
-}, [dispatch]);
+    };
+    autoLogin();
+  }, [dispatch]);
 
   useEffect(() => {
-  const fetchUserCart = async () => {
-    if (islogin) {
-      try {
-        const response = await getCart();
-        dispatch(setCart(response)); // response phải có cấu trúc { products: [...] }
-      } catch (err) {
-        console.error("Không lấy được giỏ hàng:", err.message);
+    const fetchUserCart = async () => {
+      if (islogin) {
+        try {
+          const response = await getCart();
+          dispatch(setCart(response));
+        } catch (err) {
+          console.error("Không lấy được giỏ hàng:", err.message);
+        }
       }
-    }
-  };
-  fetchUserCart();
-}, [islogin, dispatch]);
+    };
+    fetchUserCart();
+  }, [islogin, dispatch]);
   return (
     <div>
       <header className="layout-default">
         <NavLink className="layout-default__logo" to="/">
           <div className="layout-default__logo">
             <img className="img" src={logo} alt="logo" />
-            <div>Logo</div>
+            <div>GymFlex</div>
           </div>
         </NavLink>
 
-        <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
-          <RightSquareOutlined />
-        </div>
-
-        <div ref={menuRef} className={`layout-default__menu ${menuOpen ? "menu-open" : ""}`}>
+        <div
+          ref={menuRef}
+          className={`layout-default__menu ${
+            menuOpen ? "menu-open" : ""
+          }`}
+        >
           <NavLink className="NavLink" to="/">
             Trang chủ
           </NavLink>
@@ -149,10 +158,10 @@ useEffect(() => {
           ) : (
             <>
               <NavLink className="NavLink" to="/login">
-                Dang Nhap
+                Đăng nhập
               </NavLink>
               <NavLink className="NavLink" to="/register">
-                Dang ki
+                Đăng kí
               </NavLink>
             </>
           )}
@@ -161,7 +170,7 @@ useEffect(() => {
       <main>
         <Outlet />
       </main>
-      {!hideFooter && (
+        {!onlyHeader && !hideFooter && (
         <footer className="ava-footer gymbe-footer">
           <div className="container">
             <Row gutter={[32, 32]} className="footer-content">

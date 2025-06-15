@@ -3,14 +3,9 @@ import { useOutletContext } from "react-router-dom";
 import "./useraddress.scss";
 import CartAddress from "../../Carts/cartAddress";
 import { useState } from "react";
-import { get } from "../../../utils/request";
-import { getCookie } from "../../../helpers/cookie";
 const { Text } = Typography;
 function UserAddress() {
   const {user}=useOutletContext();
-  //  console.log(user);
-  // const addresses = user?.address || [];
-  // console.log(addresses);
   const [addresses, setAddresses] = useState(user?.address || []);
   const [isModalVisible, setIsModalVisible] = useState(false);
  
@@ -20,9 +15,6 @@ function UserAddress() {
   };
 
   const handleModalClose = async () => {
-    const userId = getCookie("id");
-    const updatedUser = await get(`users/${userId}`);
-    setAddresses(updatedUser.address);
     setIsModalVisible(false);
   };
   return (
@@ -51,13 +43,13 @@ function UserAddress() {
           <Button type="link" onClick={handleUpdateClick}>Thêm địa chỉ</Button>
         )}
         <Modal
-        title="Cập nhật địa chỉ"
-        visible={isModalVisible}
-         
-        footer={null} 
-      >
-        <CartAddress closeModal={handleModalClose}  />
-      </Modal>
+          title="Cập nhật địa chỉ"
+          open={isModalVisible}
+          onCancel={() => setIsModalVisible(false)}
+          footer={null}
+        >
+          <CartAddress closeModal={handleModalClose} />
+        </Modal>
       </div>
     </div>
   );

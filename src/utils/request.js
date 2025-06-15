@@ -79,7 +79,6 @@ export const patch = async (path, options) => {
     "Content-Type": "application/json",
     ...(token && { Authorization: `Bearer ${token}` }), // Thêm token vào header nếu tồn tại
   };
-
   const response = await fetch(API_DOMAIN + path, {
     method: "PATCH",
     headers,
@@ -88,7 +87,6 @@ export const patch = async (path, options) => {
   });
   return await response.json();
 };
-<<<<<<< HEAD
 
 export const put = async (path, options) => {
   const token = getCookie("token"); // Lấy token từ cookies
@@ -106,5 +104,4 @@ export const put = async (path, options) => {
   });
   return await response.json();
 };
-=======
->>>>>>> f2fe215 (update cart...)
+

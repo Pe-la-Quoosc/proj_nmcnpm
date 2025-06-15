@@ -1,6 +1,6 @@
 import { Button, Form, Input, message } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { updatePassword } from "../../services/usersServices";
+import { resetPassword } from "../../services/usersServices";
 
 function ResetPassword() {
   const { token } = useParams();
@@ -8,7 +8,7 @@ function ResetPassword() {
 
   const onFinish = async (values) => {
     try {
-       await updatePassword(token, values.newPassword);
+       await resetPassword(token, values.newPassword);
       message.success("Đặt lại mật khẩu thành công!");
       navigate("/login");
     } catch (error) {

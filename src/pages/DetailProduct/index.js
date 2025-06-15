@@ -22,11 +22,10 @@ import { addToCart } from "../../services/cartService";
 import { getCategoryAttributes } from "../../services/productsService";
 import { addToCartAction } from "../../actions/cart";
 
-
 const { Title, Text } = Typography;
 
 function DetailProduct() {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [mainImgIndex, setMainImgIndex] = useState(0);
   const [product, setProduct] = useState({});
@@ -36,7 +35,6 @@ function DetailProduct() {
   const [selectedAttributes, setSelectedAttributes] = useState({});
 
   const handleAttributeChange = (attributeName, value) => {
-    console.log("Value", value);
     setSelectedAttributes((prev) => ({
       ...prev,
       [attributeName]: value,
@@ -45,7 +43,7 @@ function DetailProduct() {
 
   const handleAddToCart = async () => {
     try {
-      addToCart(product, 1, selectedAttributes);
+      addToCart(product._id, 1, selectedAttributes);
       dispatch(addToCartAction(product, selectedAttributes, 1));
 
       notification.success({
@@ -54,7 +52,7 @@ function DetailProduct() {
         placement: "topRight",
         duration: 2,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -86,7 +84,11 @@ function DetailProduct() {
     };
     fetchAttributes();
   }, [product.category]);
-  console.log("product", product);
+  const [averageRating, setAverageRating] = useState(0);
+
+  const handleAverageRatingChange = (rating) => {
+    setAverageRating(rating);
+  };
   return (
     <>
       <div className="section1">
@@ -106,7 +108,7 @@ function DetailProduct() {
                       key={index}
                       preview={false}
                       src={img}
-                      onClick={() => setMainImgIndex(index)} // Đặt hình ảnh chính khi click
+                      onClick={() => setMainImgIndex(index)}
                     />
                   ))}
                 </Space>
@@ -116,12 +118,12 @@ function DetailProduct() {
                   className="main-image"
                   preview={false}
                   width="100%"
-                  src={images[mainImgIndex] || images[0]} // Hiển thị hình ảnh chính
+                  src={images[mainImgIndex] || images[0]}
                 />
               </Col>
             </Row>
           </Col>
-          {/* Product Details Section */}
+
           <Col span={10} className="detail-product__info">
             <Row gutter={[16, 16]}>
               <Col span={24}>
@@ -130,33 +132,28 @@ function DetailProduct() {
                 </Title>
               </Col>
 
-              <div className="product-description">
-                <Text>Đã bán: {product.sold}</Text>
-                <Text strong style={{ fontSize: "16px", marginRight: "10px" }}>
-                  Đánh giá:
-                </Text>
-                <Rate
-                  allowHalf
-                  disabled
-                  value={parseFloat(product.totalrating)}
-                />
-                <Text style={{ marginLeft: "10px" }}>
-                  {product.totalrating} / 5
-                </Text>
-              </div>
+              <Col className="product-description">
+                <div>Đã bán: {product.sold}</div>
+                <div>Đánh giá:</div>
+                <Rate allowHalf disabled value={parseFloat(averageRating)} />
+                <div style={{ marginLeft: "10px" }}>{averageRating} / 5</div>
+              </Col>
 
               <Col span={24} className="product-price">
-                <Text strong style={{ color: "red", fontSize: "24px" }}>
-                  {(
-                    (product.price * (100 - product.discountPercentage)) /
-                    100
-                  ).toFixed(0)}{" "}
-                  VND
-                </Text>
-                <br />
-                <Text delete style={{ color: "gray", fontSize: "18px" }}>
-                  {product.price} VND
-                </Text>
+                <div className="product-price__current">
+                  <Text strong style={{ color: "red", fontSize: "24px", marginRight: "10px" }}>
+                    {(
+                      (product.price * (100 - product.discountPercentage)) /
+                      100
+                    ).toFixed(0)}
+                  đ
+                  </Text>
+                  <br />
+                  <Text delete style={{ color: "gray", fontSize: "18px" }}>
+                    {product.price} đ
+                  </Text>
+                </div>
+
                 <br />
                 <Tag color="red" style={{ fontSize: 14 }}>
                   Giảm: {product.discountPercentage}%
@@ -214,6 +211,7 @@ function DetailProduct() {
 
       <ProductReviews
         productId={product._id}
+        onAverageRatingChange={handleAverageRatingChange}
       />
 
       <div className="section3-title">Sản Phẩm Tương Tự</div>

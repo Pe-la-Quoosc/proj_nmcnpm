@@ -1,43 +1,56 @@
-import { Pagination, Rate, Button, Input, List, Typography, message } from "antd";
-import { useState, useEffect,useCallback } from "react";
+import {
+  Pagination,
+  Rate,
+  Button,
+  Input,
+  List,
+  Typography,
+  message,
+} from "antd";
+import { useState, useEffect, useCallback } from "react";
 import { addReview, getReviewsByProduct } from "../../services/reviewService";
-
+import "./ProductReview.scss";
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
-function ProductReviews({ productId }) {
-  const [reviews, setReviews] = useState([]); // Danh sách đánh giá
-  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-  const [newComment, setNewComment] = useState(""); // Nội dung đánh giá mới
-  const [newRating, setNewRating] = useState(0); // Số sao đánh giá mới
-  const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
+function ProductReviews({ productId , onAverageRatingChange }) {
+  const [reviews, setReviews] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [newComment, setNewComment] = useState(""); 
+  const [newRating, setNewRating] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const pageSize = 5;
 
-  const pageSize = 5; // Số đánh giá trên mỗi trang
-
-
-const fetchReviews = useCallback(async () => {
-  try {
-    setLoading(true);
-    const response = await getReviewsByProduct(productId);
-    if (Array.isArray(response)) {
-      setReviews(response);
-    } else {
-      setReviews([]);
+  const calculateAverageRating = (reviews) => {
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+      return 0;
     }
-  } catch (error) {
-    message.error("Không thể tải đánh giá sản phẩm!");
-  } finally {
-    setLoading(false);
-  }
-}, [productId]); 
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    return (totalRating / reviews.length).toFixed(1);
+  };
 
-  // Gửi đánh giá mới
+  const fetchReviews = useCallback(async () => {
+    try {
+      const response = await getReviewsByProduct(productId);
+      if (Array.isArray(response)) {
+        setReviews(response);
+        const average = calculateAverageRating(response);
+        if (onAverageRatingChange) {
+          onAverageRatingChange(average);
+        }
+      } else {
+        setReviews([]);
+      }
+    } catch (error) {
+    }
+  }, [productId, onAverageRatingChange]);
+
   const handleSubmit = async () => {
     if (newComment.trim() && newRating > 0) {
       try {
         setLoading(true);
         const response = await addReview(productId, newRating, newComment);
-        if(response.message.includes("already reviewed")) {
+        if (response.message.includes("already reviewed")) {
           message.warning("Bạn đã đánh giá sản phẩm này trước đó!");
         } else {
           message.success("Đánh giá của bạn đã được gửi!");
@@ -55,20 +68,15 @@ const fetchReviews = useCallback(async () => {
     }
   };
 
-useEffect(() => {
-  fetchReviews();
-}, [fetchReviews]);
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
-  // Lấy các đánh giá cho trang hiện tại
   const paginatedReviews = Array.isArray(reviews)
     ? reviews.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     : [];
-
   return (
     <div className="product-reviews">
-      <Title level={4}>Đánh giá sản phẩm</Title>
-
-      {/* Khu vực để tự comment */}
       <div className="add-review" style={{ marginTop: "20px" }}>
         <Title level={5}>Viết đánh giá của bạn</Title>
         <Rate

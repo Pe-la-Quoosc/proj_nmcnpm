@@ -9,12 +9,12 @@
   }
 
   &__filter {
-    display:inline;
+    display: inline;
     background-color: #f9f9f9;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    .search{
+    .search {
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 10px;
@@ -37,7 +37,7 @@
   }
   &__item {
     position: relative;
-    flex: 1 1 calc(25% - 20px); 
+    flex: 1 1 calc(25% - 20px);
     max-width: calc(25% - 20px);
     height: 350px;
     width: 15%;
@@ -53,18 +53,18 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
-  &__search{
+  &__search {
     display: flex;
     margin-bottom: 15px;
   }
 }
 
-.navlink{
+.navlink {
   position: relative;
   z-index: 1;
 }
 .product {
-  
+  display: flex;
   position: relative;
   width: 100%;
   height: 100%;
@@ -79,26 +79,27 @@
     font-weight: 600;
   }
   &__price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     &--new {
-      font-size: 14px;
+      font-size: 18px;
       font-weight: bold;
       color: red;
     }
     &--old {
-      font-size: 12px;
+      font-size: 16px;
       color: #999;
       text-decoration: line-through;
     }
   }
-  button {
-    position: absolute;
-    top:300px;
-    right:10px;
-    background-color: orange;
-    z-index: 10;
+  &__percent {
+    font-size: 12px;
+    background-color: #f69113;
+    color: #fff;
   }
 }
 
-.Select{
+.Select {
   width: 70%;
 }

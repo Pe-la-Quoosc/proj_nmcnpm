@@ -10,7 +10,6 @@ function Login() {
   const onFinish = async (e) => {
     try {
       const response = await login(e.username, e.password);
-<<<<<<< HEAD
       console.log(response);
         if(!response.token){
           throw new Error("Login failed: No token received");
@@ -30,22 +29,6 @@ function Login() {
       } else {
         navigate("/");
       }
-
-=======
-      if (!response.token) {
-        throw new Error("Login failed: No token received");
-      }
-      notification.success({
-        message: "Login successful",
-        description: "Welcome back!",
-        className: "custom-notification__success",
-        placement: "topRight",
-        duration: 1,
-      });
-
-      dispatch(checkLogin(true));
-      navigate("/");
->>>>>>> f2fe215 (update cart...)
     } catch (error) {
       notification.error({
         message: "Login failed",
@@ -63,10 +46,10 @@ function Login() {
     <>
       <div className="login">
         <div className="login-container">
-          <Row gutter={[20, 20]}>
+          <Row gutter={[20, 30]}>
             <Col span={12} className="login-header">
-              <h1> Tên tiêu đề</h1>
-              <p> Nội dung :.....</p>
+              <h1> Chào mừng đến với GymFlex</h1>
+              <p> Đăng nhập để truy cập vào các chương trình tập luyện, theo dõi tiến độ và nhận hỗ trợ từ cộng đồng Gym Việt.</p>
             </Col>
             <Col span={12} className="login-form">
               <h1>Đăng nhập</h1>
@@ -100,16 +83,7 @@ function Login() {
                   </Button>
                 </Form.Item>
 
-                <Form.Item className="login-form__button">
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="button"
-                    onClick={handleSignUp}
-                  >
-                    Đăng Kí
-                  </Button>
-                </Form.Item>
+                <div> Chưa có tài khoản?<NavLink to='/register'><b>Đăng kí</b></NavLink></div>
               </Form>
             </Col>
           </Row>

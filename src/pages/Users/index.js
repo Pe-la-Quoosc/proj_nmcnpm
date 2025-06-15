@@ -9,7 +9,6 @@ import "./Users.scss";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getCookie } from "../../helpers/cookie";
 import { getCurrentUser} from "../../services/usersServices";
 const { Sider,Content } = Layout;
 
@@ -25,18 +24,16 @@ function UserProfile() {
     else if (key === "voucher") navigate("/user/voucher");
   };
   const updateUser = (newUserData) => {
-    setUser(prev => ({ ...prev, ...newUserData }));
+    setUser(newUserData);
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getCurrentUser();
       setUser(res);
-      // console.log("Fetched user data:", res);
     };
     fetchUser();
   }, []);
-  console.log("User data in UserProfile:", user);
   return (
     <Layout className="user-profile">
       <Sider width={260} className="user-profile__sider">
@@ -62,7 +59,7 @@ function UserProfile() {
         />
       </Sider>
       <Content className="user-profile__content">
-        <Outlet context={{ user, updateUser }} />
+        <Outlet context={{ user, updateUser }} key={user.updatedAt || user.email || user.fullname || Date.now()} />
       </Content>
     </Layout>
   );

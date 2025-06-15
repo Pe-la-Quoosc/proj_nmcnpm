@@ -16,19 +16,19 @@ function Product() {
   const prices = [
     {
       value: "",
-      label: "Mac dinh",
+      label: "Mặc định",
     },
     {
       value: "priceAsc",
-      label: "Gia thap den cao",
+      label: "Giá thấp đến cao",
     },
     {
       value: "priceDesc",
-      label: "Gia cao den thap",
+      label: "Giá cao đến thấp",
     },
     {
       value: "discount",
-      label: "Giam gia nhieu",
+      label: "Giảm giá nhiều",
     },
   ];
 
@@ -87,7 +87,6 @@ useEffect(() => {
       setFilteredProducts(products);
     } else {
       const filtered = products.filter((item) => item.category?.name === category);
-      // console.log("Filtered by category:", filtered);
       setFilteredProducts(filtered);
     }
     setCurrentPage(1);
@@ -102,15 +101,15 @@ useEffect(() => {
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "priceAsc") {
-      return a.price - b.price; // Giá thấp đến cao
+      return a.price - b.price;
     }
     if (sortBy === "priceDesc") {
-      return b.price - a.price; // Giá cao đến thấp
+      return b.price - a.price;
     }
     if (sortBy === "discount") {
-      return b.discountPercentage - a.discountPercentage; // Giảm giá nhiều nhất
+      return b.discountPercentage - a.discountPercentage; 
     }
-    return 0; // Mặc định không sắp xếp
+    return 0;
   });
 
   const currentProducts = sortedProducts.slice(startIndex, endIndex);
@@ -118,13 +117,13 @@ useEffect(() => {
   return (
     <>
       <div className="products-page">
-        <h2 className="products-page__title">Danh sach san pham</h2>
+        <h2 className="products-page__title">Danh sách sản phẩm</h2>
         <Row gutter={[20, 20]} className="product-page__layout">
           <Col span={4} className="products-page__filter">
             <div className="search">Tìm kiếm </div>
             <div className="products-page__search">
               <Input
-                placeholder="Tim kiem"
+                placeholder="Tìm kiếm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => {
@@ -133,7 +132,7 @@ useEffect(() => {
                   }
                 }}
               />
-              <Button onClick={handleSearch}>Tim</Button>
+              <Button onClick={handleSearch}>Tìm</Button>
             </div>
             <div>
               <div className="search">Phân loại:</div>

@@ -7,18 +7,28 @@ import dc_img from "../../assets/images/Premium Photo _ Flat lay arrangement wit
 import qa_img from "../../assets/images/tải xuống.jpg";
 import subimg from "../../assets/images/Dumbbell An Old Gym Setting With Dumbbells Backgrounds _ JPG Free Download - Pikbest.jpg";
 import home_img from "../../assets/images/home-img.png";
-import { exercisesData } from "../../data/exerciseData"; 
+import { exercisesData } from "../../data/exerciseData";
 
-const sectionImages = exercisesData.map(item => ({
+const sectionImages = exercisesData.map((item) => ({
   id: item.id,
   image: item.img,
   alt: item.group,
   title: item.group,
 }));
 const carouselItems = [
-  { src: tpbs_img, alt: "Suplements", title: "Thuc pham bo sung" },
-  { src: dc_img, alt: "Equipment", title: "Dung cu tap luyen" },
-  { src: qa_img, alt: "Clothing", title: "Quan ao" },
+  {
+    src: tpbs_img,
+    alt: "Suplements",
+    title: "Thực phẩm bổ sung",
+    link: "/products",
+  },
+  {
+    src: dc_img,
+    alt: "Equipment",
+    title: "Dụng cụ tập luyện",
+    link: "/products",
+  },
+  { src: qa_img, alt: "Clothing", title: "Quần áo", link: "/products" },
 ];
 
 function Home() {
@@ -31,14 +41,15 @@ function Home() {
           <div className="home-section__content">
             <Row gutter={[30, 30]} align={"middle"}>
               <Col xs={24} md={12} className="home-content">
-                <h1 className="home-title">Nội dung chính</h1>
+                <h1 className="home-title">Nâng tầm thể chất của bạn</h1>
                 <p className="home-description">
-                  Chào mừng bạn đến với trang web của chúng tôi! Tại đây, bạn sẽ
-                  tìm thấy những thông tin hữu ích và các sản phẩm chất lượng
-                  nhất. Hãy khám phá ngay!
+                  Chào mừng bạn đến với trung tâm Gym của chúng tôi! Tại đây,
+                  bạn sẽ tìm thấy các chương trình luyện tập chuyên nghiệp,
+                  trang thiết bị hiện đại và đội ngũ huấn luyện viên tận tâm.
+                  Hãy bắt đầu hành trình thay đổi bản thân ngay hôm nay!
                 </p>
                 <Button className="cta-button" type="primary" size="large">
-                  <NavLink to="/login">Kham Pha Ngay</NavLink>
+                  <NavLink to="/login">Khám Phá Ngay</NavLink>
                 </Button>
               </Col>
               <Col xs={24} md={12} className="home-image">
@@ -53,11 +64,15 @@ function Home() {
             <h2 className="section-title">Sản phẩm và dịch vụ</h2>
             <Row gutter={[30, 30]}>
               <Col xs={24} lg={6} className="products-intro">
-                <h3 className="section-subtitle">Giai phap toan dien</h3>
+                <h3 className="section-subtitle">
+                  Giải pháp thể hình toàn diện
+                </h3>
                 <p className="products-section__description">
-                  Chúng tôi cung cấp mọi thứ bạn cần cho quá trình tập luyện từ
-                  thiết bị chất lượng cao, thực phẩm bổ sung đạt chuẩn đến trang
-                  phục thể thao chuyên nghiệp.
+                  Chúng tôi mang đến cho bạn mọi thứ cần thiết để đạt được mục
+                  tiêu thể hình: từ thiết bị tập luyện cao cấp, thực phẩm bổ
+                  sung dinh dưỡng đến trang phục thể thao chuyên nghiệp. Tất cả
+                  đều được tuyển chọn kỹ lưỡng để tối ưu hiệu quả luyện tập của
+                  bạn.
                 </p>
               </Col>
               <Col xs={24} lg={18}>
@@ -70,8 +85,10 @@ function Home() {
                 >
                   {carouselItems.map((item, index) => (
                     <div key={index} className="carousel-item">
-                      <img src={item.src} alt={item.alt} loading="lazy" />
-                      <div className="carousel-caption">{item.title}</div>
+                      <NavLink to={item.link}>
+                        <img src={item.src} alt={item.alt} loading="lazy" />
+                        <div className="carousel-caption">{item.title}</div>
+                      </NavLink>
                     </div>
                   ))}
                 </Carousel>
@@ -82,13 +99,13 @@ function Home() {
         {/* Excercises Section */}
         <section className="excercise-section">
           <div className="container">
-              <div className="section-title"> Bài tập theo nhóm cơ </div>
-              <div className="section-divider"></div>
-              <div className="section-description">
-                Hệ thống bài tập được phân loại theo từng nhóm cơ giúp bạn dễ
-                dàng lựa chọn và tập trung phát triển các vùng cơ thể mong muốn.
-              </div>
-            <Row gutter={[20,20]} className="excercise-grid">
+            <div className="section-title"> Bài tập theo nhóm cơ </div>
+            <div className="section-divider"></div>
+            <div className="section-description">
+              Hệ thống bài tập được phân loại theo từng nhóm cơ giúp bạn dễ dàng
+              lựa chọn và tập trung phát triển các vùng cơ thể mong muốn.
+            </div>
+            <Row gutter={[20, 20]} className="excercise-grid">
               {sectionImages.map((item, index) => (
                 <Col
                   key={index}
@@ -102,7 +119,6 @@ function Home() {
                     <h3>{item.title}</h3>
                   </NavLink>
                 </Col>
-                
               ))}
             </Row>
           </div>

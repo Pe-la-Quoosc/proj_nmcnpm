@@ -51,7 +51,7 @@ function CartItem({ item, refreshCart }) {
     >
       {/* Ảnh */}
       <Link to={`/products/${item.product._id}`}>
-        <img src={item.product.images[0]} alt={item.product.name} />
+        <img className="img" src={item.product.images[0]} alt={item.product.name} />
       </Link>
       {/* Tên sản phẩm */}
       <Link to={`/products/${item.product._id}`} className="cart__title">

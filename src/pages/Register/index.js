@@ -49,10 +49,10 @@ function Register() {
     <>
       <div className="signup">
         <div className="signup-container">
-          <Row gutter={[20, 20]}>
+          <Row gutter={[20, 30]}>
             <Col span={12} className="signup-header">
-              <h1> Tên tiêu đề</h1>
-              <p> Nội dung :.....</p>
+              <h1>Sẵn sàng cho một cơ thể khỏe mạnh? </h1>
+              <p> Tạo tài khoản để truy cập giáo án tập luyện, video hướng dẫn, và kết nối với những người có cùng mục tiêu thể hình.</p>
             </Col>
             <Col span={12} className="signup-form">
               <h1>Đăng kí </h1>

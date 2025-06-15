@@ -8,7 +8,7 @@ function User1() {
     {
       key: "1",
       label: (
-        <NavLink className="NavLink" to="/user">
+        <NavLink className="NavLink" to="/user/profile">
           Thong tin ca nhan
         </NavLink>
       ),
@@ -16,7 +16,7 @@ function User1() {
     {
       key: "2",
       label: (
-        <NavLink className="NavLink" to="/manager">
+        <NavLink className="NavLink" to="/admin">
           Quan li
         </NavLink>
       ),

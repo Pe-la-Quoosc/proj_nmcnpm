@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+
 import { post,get,patch, put } from "../utils/request";
-=======
-import { post,get,patch } from "../utils/request";
 const API_DOMAIN = "http://localhost:3002/";
->>>>>>> f2fe215 (update cart...)
 //
 export const login = async (username, password) => {
   // console.log("Sending login request:", username, password);
@@ -29,27 +26,7 @@ export const register = async (options) => {
     throw new Error(error.message || "Registration failed");
   }
 };
-//
-export const getUserById = async (id) => {
-  const response = await get(`api/user/${id}`);
-  if (!response || response.error) {
-    throw new Error(response.error || "Failed to fetch user data");
-  }
-  return response;
-}
-<<<<<<< HEAD
 
-export const getAllUsers = async (params) => {
-  const response = await get("api/user/all-users", params);
-  if (!response || response.error) {
-    throw new Error(response.error || "Failed to fetch users");
-  }
-  return response;
-};
-
-export const updateUser= async (id, data) => {
-  const response = await post(`api/user/${id}`, data);
-=======
 //Get current user
 export const getCurrentUser = async () => {
   const response = await get("api/user/me");
@@ -61,22 +38,28 @@ export const getCurrentUser = async () => {
 //Update current user
 export const updateCurrentUser = async (data) => {
   const response = await patch(`api/user/update-me`, data);
->>>>>>> f2fe215 (update cart...)
   if (!response || response.error) {
     throw new Error(response.error || "Failed to update user data");
   }
   return response;
 };
-
+//Update user address
 export const updateUserAddress = async (payload) => {
-  const response = await put(`api/user/update-address`, payload);
+  const response = await patch(`api/user/update-address`, payload);
   if (!response || response.error) {
     throw new Error(response.error || "Failed to update user address");
   }
   return response; 
 };
+//Change password
+export const changePassword = async (data) => {
+  const response = await patch("api/user/change-password", data);
+  if (!response || response.error) {
+    throw new Error(response.error || "Thay đổi mật khẩu thất bại");
+  }
+  return response;
+};
 
-<<<<<<< HEAD
 export const blockUser = async (id) => {
   const response = await put(`api/user/block-user/${id}`);
   if (!response || response.error) {
@@ -100,22 +83,18 @@ export const createOrder = async (payload) => {
   }
   return response;
 }
-=======
+//Send forgot password email
 export const sendForgotPasswordEmail = async (email) =>{
   const response=await post("api/user/forgot-password",{email});
   return response;
 }
-
+// Update new password
 export const resetPassword = async(token,password)=>{
-  const response = await post(`api/user/reset-password/${token}`,{password});
+ const response = await patch(`api/user/reset-password/${token}`,{password});
   return response;
 }
 
-export const updatePassword = async(id,password)=>{
-  const response = await post("api/user/update-password",{id,password});
-  return response;
-}
-
+//Logout
 export const logout = async () => {
     const response = await post("api/user/logout");
     if (!response || response.error) {
@@ -140,8 +119,15 @@ export const refreshToken = async () => {
   }
 };
 
+export const getAllUsers = async (params) => {
+  const response = await get("api/user/all-users", params);
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to fetch users");
+  }
+  return response;
+};
 
->>>>>>> f2fe215 (update cart...)
+
 
 
 
