@@ -1,5 +1,15 @@
 const cartReducer = (state = { products: [], totalQuantity: 0 }, action) => {
   switch (action.type) {
+    case "SET_CART":
+      const totalQuantity = action.payload.products.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      return {
+        ...state,
+        products: action.payload.products,
+        totalQuantity,
+      };
     case "SET_TOTAL_QUANTITY":
       return {
         ...state,

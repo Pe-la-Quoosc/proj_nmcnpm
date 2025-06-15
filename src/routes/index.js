@@ -16,6 +16,8 @@ import UserAddress from "../pages/Users/UserAddress";
 import UserPassword from "../pages/Users/UserPassword";
 import UserOrders from "../pages/Users/UserOrders";
 import UserProfileInfo from "../pages/Users/UserProfileInfo";
+import Contact from "../pages/Contact";
+import About from "../pages/About";
 
 import AdminLayout from "../layouts/LayoutDefault/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard";
@@ -25,7 +27,11 @@ import OrderManagement from "../pages/Admin/Order";
 import OrderDetail from "../pages/Admin/OrderDetail";
 import AddNewProducts from "../pages/Admin/AddNewProducts";
 import ProductDetail from "../pages/Admin/ProductDetail";
+import CategoryManagement from "../pages/Admin/Category";
+
 import BlogManagement from "../pages/Admin/Blog";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 export const routes = [
     {
@@ -41,6 +47,8 @@ export const routes = [
             {path:"knowledge",element:<Knowledge/>},
             {path:"blog",element:<Blog/>},
             {path: "blog/:id", element: <BlogDetail />},
+            {path: "contact", element: <Contact />},
+            {path: "about", element: <About />},
             {path: "knowledge/:id", element: <ExerciseDetail /> },
             {path:"carts",element:<Carts/>},
             {path:"user",element:<User/>,
@@ -50,21 +58,29 @@ export const routes = [
                     {path:"password",element:<UserPassword/>},
                     {path:"orders",element:<UserOrders/>},
                 ]
-            }
+            },
+            {path:"forgot",element:<ForgotPassword/>},
+            {path:"reset-password/:token", element:<ResetPassword/>}
         ],
     },
     {
-        path: "/admin",
+    path: "/admin",
+    element: <LayoutDefault onlyHeader={true} />,
+    children: [
+        {
         element: <AdminLayout />,
         children: [
             { index: true, element: <Dashboard /> },
             { path: "users", element: <UserManagement /> },
             { path: "products", element: <ProductManagement /> },
             { path: "products/add-product", element: <AddNewProducts /> },
-            { path: "products/:id", element: <ProductDetail /> }, // For editing existing products
+            { path: "products/:id", element: <ProductDetail /> },
             { path: "orders", element: <OrderManagement /> },
-            { path: "orders/:id", element: <OrderDetail /> }, 
+            { path: "orders/:id", element: <OrderDetail /> },
             { path: "blogs", element: <BlogManagement /> },
+            { path: "categories", element: <CategoryManagement /> }
         ]
+        }
+    ]
     }
 ];

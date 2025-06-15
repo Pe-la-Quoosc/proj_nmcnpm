@@ -47,8 +47,8 @@ const footerData = {
   ],
 };
 
-function LayoutDefault() {
-  const token = getCookie("token");
+function LayoutDefault({ onlyHeader = false }) {
+  const token = getCookie("accessToken");
   // console.log(token);
   const location = useLocation();
   const menuRef = useRef(null);
@@ -134,10 +134,10 @@ function LayoutDefault() {
           )}
         </div>
       </header>
-      <main>
+      <main style={{ minHeight: "60vh" }}>
         <Outlet />
       </main>
-      {!hideFooter && (
+      {!onlyHeader && !hideFooter && (
         <footer className="ava-footer gymbe-footer">
           <div className="container">
             <Row gutter={[32, 32]} className="footer-content">

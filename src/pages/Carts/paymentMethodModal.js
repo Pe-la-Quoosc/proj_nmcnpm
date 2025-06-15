@@ -1,6 +1,6 @@
 import { Modal, Radio, Button } from "antd";
 import { useState, useEffect } from "react";
-function PaymentMethodModal({
+function PaymentModal({
   open,
   onClose,
   selectedPayment,
@@ -44,4 +44,4 @@ function PaymentMethodModal({
     </Modal>
   );
 }
-export default PaymentMethodModal;
+export default PaymentModal;

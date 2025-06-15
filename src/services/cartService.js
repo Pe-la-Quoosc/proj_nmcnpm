@@ -12,6 +12,7 @@ export const addToCart = async (productId, quantity = 1, selectedAttributes = {}
 
 export const getCart = async () => {
   const response = await get("api/cart/user");
+  console.log("User Cart:", response);
   if (!response || response.error) {
     throw new Error(response.error || "Failed to fetch cart");
   }

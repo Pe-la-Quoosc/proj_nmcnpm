@@ -69,8 +69,8 @@ function Carts() {
     },
   ];
 
-  const totalPrice = cart.CartTotal || 0;
 
+  const totalPrice = cart.CartTotal || 0;
   
 
   const handleOpenVoucherModal = () => {
@@ -83,7 +83,6 @@ function Carts() {
   const handleOpenPaymentModal = () => {
     setPaymentModalOpen(true); // Mở modal thanh toán
   };
-
   const handleClosePaymentModal = () => {
     setPaymentModalOpen(false); // Đóng modal thanh toán
   };

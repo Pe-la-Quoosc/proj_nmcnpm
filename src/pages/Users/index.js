@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../helpers/cookie";
-import { getUserById } from "../../services/usersServices";
+import { getCurrentUser} from "../../services/usersServices";
 const { Sider,Content } = Layout;
 
 function UserProfile() {
@@ -30,12 +30,13 @@ function UserProfile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userId = getCookie("id");
-      const res = await getUserById(userId);
+      const res = await getCurrentUser();
       setUser(res);
+      // console.log("Fetched user data:", res);
     };
     fetchUser();
   }, []);
+  console.log("User data in UserProfile:", user);
   return (
     <Layout className="user-profile">
       <Sider width={260} className="user-profile__sider">
