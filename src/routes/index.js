@@ -16,12 +16,10 @@ import UserAddress from "../pages/Users/UserAddress";
 import UserPassword from "../pages/Users/UserPassword";
 import UserOrders from "../pages/Users/UserOrders";
 import UserProfileInfo from "../pages/Users/UserProfileInfo";
-<<<<<<< HEAD
-=======
 import Contact from "../pages/Contact";
 import About from "../pages/About";
 
->>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
+
 import AdminLayout from "../layouts/LayoutDefault/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard";
 import UserManagement from "../pages/Admin/User";
@@ -31,11 +29,7 @@ import OrderDetail from "../pages/Admin/OrderDetail";
 import AddNewProducts from "../pages/Admin/AddNewProducts";
 import ProductDetail from "../pages/Admin/ProductDetail";
 import CategoryManagement from "../pages/Admin/Category";
-
-<<<<<<< HEAD
-=======
 import BlogManagement from "../pages/Admin/Blog";
->>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
 

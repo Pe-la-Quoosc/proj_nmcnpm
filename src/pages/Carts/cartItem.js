@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateCartItem, deleteCartItem } from "../../services/cartService";
 import "./Carts.scss";
-import {addToCart,removeFromCart,updateCartItemQuantity,clearCart} from "../../actions/cart";
+import {removeFromCart,updateCartItemQuantity} from "../../actions/cart";
 
 function CartItem({ item, refreshCart }) {
   const dispatch = useDispatch();
@@ -35,7 +35,6 @@ function CartItem({ item, refreshCart }) {
 
   const handleDelete = async () => {
     try {
-      // console.log("Deleting item:", item.product._id, item.selectedAttributes);
       await deleteCartItem(item.product._id, item.selectedAttributes);
       dispatch(removeFromCart(item.product._id, item.selectedAttributes));
       refreshCart();

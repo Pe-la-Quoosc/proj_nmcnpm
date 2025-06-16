@@ -15,7 +15,7 @@ function Carts() {
   const [isVoucherModalOpen, setVoucherModalOpen] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [selectedFreeShip, setSelectedFreeShip] = useState(null);
-  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false); // Quản lý trạng thái modal thanh toán
+  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
 
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ function Carts() {
   const fetchCart = async () => {
     try {
       const response = await getCart();
-      setCart(response); // Lưu toàn bộ object cart
+      setCart(response);
       const totalQuantity = response.products.reduce(
         (sum, item) => sum + item.quantity,
         0
@@ -81,10 +81,10 @@ function Carts() {
     setVoucherModalOpen(false);
   };
   const handleOpenPaymentModal = () => {
-    setPaymentModalOpen(true); // Mở modal thanh toán
+    setPaymentModalOpen(true);
   };
   const handleClosePaymentModal = () => {
-    setPaymentModalOpen(false); // Đóng modal thanh toán
+    setPaymentModalOpen(false); 
   };
   
   const handlePlaceOrder = async () => {

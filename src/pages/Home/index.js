@@ -1,7 +1,7 @@
 import { Carousel, Button, Col, Row } from "antd";
 import "../../styles/Home.scss";
 import { NavLink } from "react-router-dom";
-import React from "react";
+import { useEffect, useState } from "react";
 import tpbs_img from "../../assets/images/Australia's Leading Online Bodybuilding Supplements Store.jpg";
 import dc_img from "../../assets/images/Premium Photo _ Flat lay arrangement with sports items and airpods.jpg";
 import qa_img from "../../assets/images/tải xuống.jpg";

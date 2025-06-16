@@ -73,11 +73,11 @@ export const del = async (path, options = {}) => {
 };
 
 export const patch = async (path, options) => {
-  const token = getCookie("accessToken"); // Lấy token từ cookies
+  const token = getCookie("accessToken");
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }), // Thêm token vào header nếu tồn tại
+    ...(token && { Authorization: `Bearer ${token}` }), 
   };
   const response = await fetch(API_DOMAIN + path, {
     method: "PATCH",
@@ -104,7 +104,3 @@ export const put = async (path, options) => {
   });
   return await response.json();
 };
-<<<<<<< HEAD
-
-=======
->>>>>>> 43f61efc1bdcae0cb52650fe2fecadcbae0c906e
