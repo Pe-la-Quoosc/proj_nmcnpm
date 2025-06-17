@@ -5,7 +5,7 @@ import "../../styles/LayoutDefault.scss";
 import logo from "../../assets/images/5c4638a6-fafb-4220-9e1a-3d7e8c642166.png";
 import Cart1 from "../../Cart_1";
 import User1 from "../../User_1";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   TwitterOutlined,
@@ -14,7 +14,7 @@ import {
   YoutubeOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { refreshToken } from "../../services/usersServices";
+import { getCurrentUser, refreshToken } from "../../services/usersServices";
 import { checkLogin } from "../../actions/login";
 import { useDispatch } from "react-redux";
 import { getCart } from "../../services/cartService";
@@ -23,11 +23,11 @@ import { setCart } from "../../actions/cart";
 
 const footerData = {
   contact: {
-    title: "GYMBE",
+    title: "GYMFLEX",
     items: [
-      "268 St. South New York/NY 98944, United States.",
-      "+222-1800-2628",
-      "gymbeexclusive@gmail.com",
+      "KTX Khu B, Thủ Đức, TP. Hồ Chí Minh",
+      "+84 123 456 789",
+      "gymflex@gmail.com",
     ],
     socials: [
       {
@@ -49,10 +49,10 @@ const footerData = {
     ],
   },
   categories: [
-    "Special Offers",
-    "Performance",
-    "T-Shirts",
-    "Underwear",
+    "Quần áo",
+    "Thực phẩm bổ sung",
+    "Dụng cụ thể thao",
+    "Đồ lót",
   ],
   customerService: [
     "Chính sách bảo mật",
@@ -65,7 +65,7 @@ const footerData = {
 function LayoutDefault({ onlyHeader = false }) {
   const islogin = useSelector((state) => state.login);
   const dispatch = useDispatch();
-
+  const [user,setUser]=useState(null);
   const location = useLocation();
   const menuRef = useRef(null);
   const hideFooter =
@@ -100,7 +100,19 @@ function LayoutDefault({ onlyHeader = false }) {
     };
     fetchUserCart();
   }, [islogin, dispatch]);
-
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (islogin) {
+        try {
+          const response = await getCurrentUser();
+          setUser(response);
+        } catch (err) {
+          console.error("Không lấy được thông tin người dùng:", err.message);
+        }
+      }
+    };
+    fetchUser();
+  }, [islogin, dispatch]);
 
   return (
     <div>
@@ -153,7 +165,7 @@ function LayoutDefault({ onlyHeader = false }) {
           {islogin ? (
             <>
               <Cart1 />
-              <User1 />
+              <User1 role={user?.role} />
             </>
           ) : (
             <>

@@ -35,7 +35,7 @@ function Contact() {
             </li>
             <li>
               <span role="img" aria-label="mail">✉️</span>
-              Email: dangminhtrikt05@gmail.com
+              Email: gymflex@gmail.com
             </li>
           </ul>
         </div>

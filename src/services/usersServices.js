@@ -25,26 +25,19 @@ export const register = async (options) => {
   }
 };
 //
-// export const getUserById = async (id) => {
-//   const response = await get(`api/user/${id}`);
-//   if (!response || response.error) {
-//     throw new Error(response.error || "Failed to fetch user data");
-//   }
-//   return response;
-// }
+export const getUserById = async (id) => {
+  const response = await get(`api/user/${id}`);
+  if (!response || response.error) {
+    throw new Error(response.error || "Failed to fetch user data");
+  }
+  return response;
+};
 
 
-// export const getAllUsers = async (params) => {
-//   const response = await get("api/user/all-users", params);
-//   if (!response || response.error) {
-//     throw new Error(response.error || "Failed to fetch users");
-//   }
-//   return response;
-// };
 
-// export const updateUser= async (id, data) => {
-//   const response = await post(`api/user/${id}`, data);
-// }
+export const updateUser= async (id, data) => {
+  const response = await post(`api/user/${id}`, data);
+}
 
 //Get current user
 export const getCurrentUser = async () => {

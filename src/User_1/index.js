@@ -9,7 +9,7 @@ function User1() {
       key: "1",
       label: (
         <NavLink className="NavLink" to="/user/profile">
-          Thong tin ca nhan
+          Thông tin cá nhân
         </NavLink>
       ),
     },

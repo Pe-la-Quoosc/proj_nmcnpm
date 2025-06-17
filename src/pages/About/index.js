@@ -9,10 +9,10 @@ function About() {
       {/* Dòng 1: About Us + Ảnh */}
       <div className="about-row">
         <div className="about-col">
-          <div className="about-title">🏪 About Us – Về FITPOWER</div>
+          <div className="about-title">🏪 About Us – Về GYMFLEX</div>
           <h3>Sứ mệnh của chúng tôi</h3>
           <div className="about-desc">
-            Tại FITPOWER, chúng tôi tin rằng sức khỏe là nền tảng cho một cuộc sống chất lượng. Được thành lập bởi những người đam mê thể hình, mục tiêu của chúng tôi là mang đến cho bạn những sản phẩm tập luyện chất lượng nhất để hỗ trợ hành trình rèn luyện thể chất, xây dựng vóc dáng và phong cách sống tích cực.
+            Tại GYMFLEX, chúng tôi tin rằng sức khỏe là nền tảng cho một cuộc sống chất lượng. Được thành lập bởi những người đam mê thể hình, mục tiêu của chúng tôi là mang đến cho bạn những sản phẩm tập luyện chất lượng nhất để hỗ trợ hành trình rèn luyện thể chất, xây dựng vóc dáng và phong cách sống tích cực.
           </div>
           <h3 style={{marginTop: 24}}>Chúng tôi cung cấp gì?</h3>
           <ul className="about-list">
@@ -33,7 +33,7 @@ function About() {
           <img src={aboutImg2} alt="FITPOWER Product" />
         </div>
         <div className="about-col">
-          <div className="about-title">💡 Why Choose Us – Tại sao chọn FITPOWER?</div>
+          <div className="about-title">💡 Why Choose Us – Tại sao chọn GYMFLEX?</div>
           <ul className="about-list">
             <li>✅ <b>Chất lượng chính hãng:</b> Chúng tôi chỉ phân phối sản phẩm có nguồn gốc rõ ràng, kiểm định kỹ lưỡng và đến từ những thương hiệu hàng đầu trong ngành thể hình.</li>
             <li>🚚 <b>Giao hàng nhanh chóng:</b> Hệ thống giao hàng toàn quốc giúp bạn nhận sản phẩm nhanh chóng, đóng gói cẩn thận, hỗ trợ đổi trả khi cần.</li>
@@ -46,7 +46,7 @@ function About() {
       {/* Cộng đồng */}
       <div className="about-row">
         <div className="about-col" style={{flex: 1}}>
-          <h3>📍 Tham gia cộng đồng #FITPOWER</h3>
+          <h3>📍 Tham gia cộng đồng #GYMFLEX</h3>
           <p>
             Theo dõi chúng tôi trên mạng xã hội để nhận bài tập, kế hoạch dinh dưỡng và ưu đãi hấp dẫn.
           </p>
