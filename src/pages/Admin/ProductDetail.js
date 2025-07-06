@@ -131,7 +131,13 @@ const ProductDetail = () => {
           message.success("Đã xóa sản phẩm!");
           navigate("/admin/products");
         } catch (err) {
-          message.error("Xóa sản phẩm thất bại!");
+          // Hiển thị message lỗi trả về từ backend nếu có
+          if (err && err.message) {
+            message.error(err.message);
+          } else {
+            message.error("Xóa sản phẩm thất bại!");
+          }
+          // Không chuyển trang nếu có lỗi
         }
       }
     });

@@ -13,4 +13,11 @@ export const createCategory = (data) => post("api/categories", data);
 export const updateCategory = (id, data) => put(`api/categories/${id}`, data);
 
 // Xóa danh mục
-export const deleteCategory = (id) => del(`api/categories/${id}`);
+export const deleteCategory = async (id) => {
+  const response = await del(`api/categories/${id}`);
+  // Nếu có lỗi trả về từ backend (có trường message hoặc error), ném lỗi với message đó
+  if (!response || response.error || response.message) {
+    throw new Error(response.error || response.message || "Xóa danh mục thất bại!");
+  }
+  return response;
+};

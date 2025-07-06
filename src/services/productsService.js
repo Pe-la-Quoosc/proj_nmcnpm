@@ -1,4 +1,4 @@
-import {get,put, post} from '../utils/request';
+import {get,put, post, del } from '../utils/request';
 
 export const getProductList = async()=>{
     return await get("api/product");
@@ -29,9 +29,9 @@ export const updateProduct = async (id, data) => {
 };
 
 export const deleteProduct = async (id) => {
-  const response = await delete(`api/product/${id}`, { method: "DELETE" });
-  if (!response || response.error) {
-    throw new Error(response.error || "Failed to delete product");
+  const response = await del(`api/product/${id}`);
+  if (!response || response.message) {
+    throw new Error(response.message || "Failed to delete product");
   }
   return response;
 };

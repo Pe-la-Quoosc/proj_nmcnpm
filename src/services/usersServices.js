@@ -96,6 +96,14 @@ export const createOrder = async (payload) => {
   return response;
 }
 
+export const changeUserRole = async (id, role) => {
+  const response = await put(`api/user/change-role/${id}`, { role });
+  if (!response || response.error || response.message) {
+    throw new Error(response.error || response.message || "Failed to change user role");
+  }
+  return response;
+};
+
 //Send forgot password email
 
 export const sendForgotPasswordEmail = async (email) =>{

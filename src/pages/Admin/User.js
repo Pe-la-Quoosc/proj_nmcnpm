@@ -1,7 +1,9 @@
 import  { useEffect, useState } from "react";
+import { Select } from "antd";
 import { Table, Input, Button, Avatar, Space, Pagination, Modal, message, Tag } from "antd";
 import { EyeOutlined, EditOutlined, StopOutlined, CheckCircleOutlined} from "@ant-design/icons";
 import { getAllUsers, blockUser, unblockUser } from "../../services/usersServices"; 
+import { changeUserRole } from "../../services/usersServices";
 import { getOrderByIdAdmin} from "../../services/orderService";
 
 const { Search } = Input;
@@ -16,6 +18,8 @@ const User = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [orderHistory, setOrderHistory] = useState([]);
   const [orderLoading, setOrderLoading] = useState(false);
+  const [editingUserId, setEditingUserId] = useState(null);
+  const [editingRole, setEditingRole] = useState("");
 
     useEffect(() => {
     fetchUsers();
@@ -58,6 +62,32 @@ const User = () => {
         }
       },
     });
+    };
+
+    const handleChangeRole = async (userId, newRole) => {
+      try {
+        await changeUserRole(userId, newRole);
+        message.success("Cập nhật vai trò thành công!");
+        // Gọi lại API lấy danh sách user nếu cần
+      } catch (err) {
+        message.error(err.message || "Cập nhật vai trò thất bại!");
+      }
+    };
+    const handleEditRole = (user) => {
+      setEditingUserId(user._id);
+      setEditingRole(user.role);
+    };
+
+    const handleSaveRole = async (userId) => {
+      try {
+        await changeUserRole(userId, editingRole);
+        message.success("Cập nhật vai trò thành công!");
+        setEditingUserId(null);
+        setEditingRole("");
+        fetchUsers();
+      } catch (err) {
+        message.error(err.message || "Cập nhật vai trò thất bại!");
+      }
     };
     const handleViewUser = async (user) => {
     setSelectedUser(user);
@@ -131,12 +161,43 @@ const User = () => {
       align: "center",
       render: (_, record) => (
         <Space>
+          <Button
+            icon={<EyeOutlined />}
+            type="text"
+            onClick={() => handleViewUser(record)}
+          />
+          {editingUserId === record._id ? (
+            <>
+              <Select
+                value={editingRole}
+                style={{ width: 100 }}
+                onChange={setEditingRole}
+                options={[
+                  { value: "admin", label: "Admin" },
+                  { value: "user", label: "User" },
+                ]}
+              />
+              <Button
+                type="primary"
+                onClick={() => handleSaveRole(record._id)}
+                style={{ marginLeft: 8 }}
+              >
+                Lưu
+              </Button>
+              <Button
+                onClick={() => setEditingUserId(null)}
+                style={{ marginLeft: 4 }}
+              >
+                Hủy
+              </Button>
+            </>
+          ) : (
             <Button
-                icon={<EyeOutlined />}
-                type="text"
-                onClick={() => handleViewUser(record)} // Thêm dòng này
+              icon={<EditOutlined />}
+              type="text"
+              onClick={() => handleEditRole(record)}
             />
-          <Button icon={<EditOutlined />} type="text" />
+          )}
           <Button
             icon={record.isBlocked ? <CheckCircleOutlined /> : <StopOutlined />}
             type="text"
@@ -148,7 +209,7 @@ const User = () => {
         </Space>
       ),
     },
-    ];
+  ];
 
   return (
     <div style={{ background: "#f8fafc", borderRadius: 12, padding: 24 }}>

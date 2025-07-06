@@ -47,8 +47,13 @@ const CategoryAdmin = () => {
       await deleteCategory(id);
       message.success("Đã xóa danh mục!");
       setRefresh(r => !r);
-    } catch {
-      message.error("Xóa danh mục thất bại!");
+    } catch (err) {
+      // Hiển thị message lỗi trả về từ backend nếu có
+      if (err && err.message) {
+        message.error(err.message);
+      } else {
+        message.error("Xóa danh mục thất bại!");
+      }
     }
   };
 
